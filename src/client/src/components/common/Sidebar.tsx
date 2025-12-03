@@ -19,7 +19,7 @@ const Sidebar = () => {
     };
 
     return (
-        <div className="w-20 group hover:w-56 transition-all duration-500 rounded-md h-full border border-gray-200 shadow-sm flex flex-col">
+        <div className="w-20 group bg-white hover:w-56 transition-all duration-500 rounded-md h-full border border-gray-200 shadow-sm flex flex-col">
 
             {/* LOGO AREA */}
             <div className="w-[80%] text-center pt-4 mx-auto flex text-lg">
