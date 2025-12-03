@@ -83,7 +83,7 @@ const SideBarItem: React.FC<ChildProps> = ({ item, openDropdown, toggleDropdown 
                 className=" hover:bg-gray-200  flex items-center gap-3 py-2 px-2 rounded-md transition-all duration-300" >
                 {<item.icon className="min-w-4 h-4" />}
 
-                <p className="text-sm opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto transition-all duration-500 overflow-hidden">
+                <p className="text-xs font-light opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto transition-all duration-500 overflow-hidden">
                     {item.title}
                 </p>
 
@@ -100,10 +100,9 @@ const SideBarItem: React.FC<ChildProps> = ({ item, openDropdown, toggleDropdown 
                     className={`px-2 flex flex-col gap-1 overflow-hidden transition-all duration-300 ${openDropdown === item.title ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}`}
                 >
                     {item.dropdown.map((sub, index) => (
-                        <li key={index} className=" hover:bg-gray-200  flex items-center gap-3 py-2 px-2  rounded-md transition-all duration-300 " >
+                        <li key={index} className=" hover:bg-gray-200 text-xs font-light  flex items-center gap-3 py-2 px-2  rounded-md transition-all duration-300 " >
                             {sub.title[0]}
-                            <p className="text-sm opacity-0 w-0 group-hover:opacity-100  group-hover:w-auto transition-all duration-500 overflow-hidden">
-
+                            <p className=" opacity-0 w-0 group-hover:opacity-100  group-hover:w-auto transition-all duration-500 overflow-hidden">
                                 {item.title}
                             </p>
                         </li>
