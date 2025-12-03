@@ -3,15 +3,20 @@ import { useState } from "react";
 import { sidebarItems } from "../../constants/sideBarItem.constant";
 import type { SidebarItem } from "../../types/sideBarItem.type";
 
+type SidebarChildProps = {
+    sidebarOpen: boolean,
+}
 
-type ChildProps = {
+
+type SidebarItemChildProps = {
     item: SidebarItem,
     openDropdown: string | null,
+    sidebarOpen: boolean,
     toggleDropdown: (title: string | null) => void
 }
 
 
-const Sidebar = () => {
+const Sidebar: React.FC<SidebarChildProps> = ({ sidebarOpen }) => {
     const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
     const toggleDropdown = (title: string | null) => {
@@ -19,23 +24,27 @@ const Sidebar = () => {
     };
 
     return (
-        <div className="w-20 group bg-white hover:w-56 transition-all duration-500 rounded-md h-full border border-gray-200 shadow-sm flex flex-col">
+        <div
+            className={`w-20 group bg-white hover:w-56 transition-all duration-500 
+            ${sidebarOpen ? 'w-56' : 'w-20'}
+            rounded-md h-full border border-gray-200 shadow-sm flex flex-col`} >
 
             {/* LOGO AREA */}
-            <div className="w-[80%] text-center pt-4 mx-auto flex text-lg">
+            < div className="w-[80%] text-center pt-4 mx-auto flex text-lg" >
                 <p className="font-medium group-hover:w-0 overflow-hidden group-hover:opacity-0">
                     EXS
                 </p>
 
-                <p className="
+                <p className={`
                     max-w-0 opacity-0 overflow-hidden 
                     group-hover:max-w-[200px] 
                     group-hover:opacity-100 
                     transition-all duration-500 font-medium
-                ">
+                    ${sidebarOpen ? "max-w-[200px] opacity-100" : "max-w-0 opacity-0"}
+                `}>
                     EdtechXSuite
                 </p>
-            </div>
+            </div >
 
             <hr className="my-3 w-[90%] mx-auto text-gray-300" />
 
@@ -50,10 +59,10 @@ const Sidebar = () => {
                                 alt=""
                             />
                         </div>
-                        <p className="text-xs opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto transition-all duration-500 overflow-hidden">
+                        <p className={`text-xs ${sidebarOpen ? "opacity-100 w-auto" : "opacity-0 w-0 "} opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto transition-all duration-500 overflow-hidden`}>
                             Brooklyn Alice
                         </p>
-                        <ChevronDown className="w-0 opacity-0 group-hover:opacity-100 group-hover:w-4 duration-500 ml-auto" />
+                        <ChevronDown className={`w-0 ${sidebarOpen ? "opacity-100 w-4" : "w-0 opacity-0"} opacity-0 group-hover:opacity-100 group-hover:w-4 duration-500 ml-auto`} />
                     </a>
                 </li>
             </ul>
@@ -65,16 +74,15 @@ const Sidebar = () => {
             <ul className="cursor-pointer flex flex-col gap-1 overflow-y-auto">
                 {sidebarItems.map((item, index) => {
                     return (
-                        <SideBarItem key={index} item={item} openDropdown={openDropdown} toggleDropdown={toggleDropdown} />
+                        <SideBarItem sidebarOpen={sidebarOpen} key={index} item={item} openDropdown={openDropdown} toggleDropdown={toggleDropdown} />
                     );
                 })}
             </ul>
-        </div>
+        </div >
     );
 };
 
-
-const SideBarItem: React.FC<ChildProps> = ({ item, openDropdown, toggleDropdown }) => {
+const SideBarItem: React.FC<SidebarItemChildProps> = ({ item, openDropdown, toggleDropdown, sidebarOpen }) => {
     return (
         <li key={item.title} className="w-[90%] mx-auto">
             {/* MAIN LINK */}
@@ -83,14 +91,14 @@ const SideBarItem: React.FC<ChildProps> = ({ item, openDropdown, toggleDropdown 
                 className=" hover:bg-gray-200  flex items-center gap-3 py-2 px-2 rounded-md transition-all duration-300" >
                 {<item.icon className="min-w-4 h-4" />}
 
-                <p className="text-xs font-light opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto transition-all duration-500 overflow-hidden">
+                <p className={`text-xs font-light opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto transition-all duration-500 overflow-hidden ${sidebarOpen ? "opacity-100 w-auto" : "opacity-0 w-0"}`}>
                     {item.title}
                 </p>
 
                 {/* DROPDOWN ICON */}
                 {item.dropdown && (
                     <ChevronDown
-                        className={`ml-auto transition-transform duration-300 ${openDropdown === item.title ? "rotate-180" : ""} opacity-0 w-0 group-hover:opacity-100 group-hover:w-4 `}
+                        className={`ml-auto transition-transform duration-300 ${openDropdown === item.title ? "rotate-180" : ""} ${sidebarOpen ? "opacity-100 w-4" : "w-0 opacity-0"} opacity-0 w-0 group-hover:opacity-100 group-hover:w-4 `}
                     />
                 )}
             </div>
@@ -100,9 +108,9 @@ const SideBarItem: React.FC<ChildProps> = ({ item, openDropdown, toggleDropdown 
                     className={`px-2 flex flex-col gap-1 overflow-hidden transition-all duration-300 ${openDropdown === item.title ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}`}
                 >
                     {item.dropdown.map((sub, index) => (
-                        <li key={index} className=" hover:bg-gray-200 text-xs font-light  flex items-center gap-3 py-2 px-2  rounded-md transition-all duration-300 " >
+                        <li key={index} className={` hover:bg-gray-200 text-xs font-light  flex items-center gap-3 py-2 px-2  rounded-md transition-all duration-300 `} >
                             {sub.title[0]}
-                            <p className=" opacity-0 w-0 group-hover:opacity-100  group-hover:w-auto transition-all duration-500 overflow-hidden">
+                            <p className={`opacity-0 w-0 group-hover:opacity-100  group-hover:w-auto transition-all duration-500 overflow-hidden ${sidebarOpen ? "opacity-100 w-auto" : "w-0 opacity-0"}`}>
                                 {item.title}
                             </p>
                         </li>

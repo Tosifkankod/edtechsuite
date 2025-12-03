@@ -3,7 +3,12 @@ import { motion } from "framer-motion";
 import { Menu, User, Settings } from "lucide-react";
 import useScrollState from "../../hooks/useScrollAnimation";
 
-export default function Header() {
+type ChildProps = {
+    setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
+
+
+const Header: React.FC<ChildProps> = ({ setSidebarOpen }) => {
     const ref = useRef(null);
     const { isAtTop } = useScrollState(ref);
 
@@ -19,7 +24,7 @@ export default function Header() {
       `}
         >
             <div className="left text-sm flex items-center">
-                <Menu className="w-4 font-extrabold mr-3 stroke-2" />
+                <Menu onClick={() => setSidebarOpen(prev => !prev)} className="w-4 font-extrabold mr-3 stroke-2" />
                 <p><span className="text-gray-500">Dashboard</span> / <b>Analytics</b></p>
             </div>
 
@@ -31,3 +36,6 @@ export default function Header() {
         </motion.header>
     );
 }
+
+
+export default Header;
