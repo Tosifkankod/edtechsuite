@@ -7,14 +7,14 @@ import type { SidebarItem } from "../../types/sideBarItem.type";
 type ChildProps = {
     item: SidebarItem,
     openDropdown: string | null,
-    toggleDropdown: (title: string) => void
+    toggleDropdown: (title: string | null) => void
 }
 
 
 const Sidebar = () => {
-    const [openDropdown, setOpenDropdown] = useState(null);
+    const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
-    const toggleDropdown = (title: any) => {
+    const toggleDropdown = (title: string | null) => {
         setOpenDropdown(openDropdown === title ? null : title);
     };
 
@@ -63,9 +63,9 @@ const Sidebar = () => {
 
             {/* SIDEBAR ITEMS */}
             <ul className="cursor-pointer flex flex-col gap-1 overflow-y-auto">
-                {sidebarItems.map((item) => {
+                {sidebarItems.map((item, index) => {
                     return (
-                        <SideBarItem item={item} openDropdown={openDropdown} toggleDropdown={toggleDropdown} />
+                        <SideBarItem key={index} item={item} openDropdown={openDropdown} toggleDropdown={toggleDropdown} />
                     );
                 })}
             </ul>
@@ -99,8 +99,8 @@ const SideBarItem: React.FC<ChildProps> = ({ item, openDropdown, toggleDropdown 
                 <ul
                     className={`px-2 flex flex-col gap-1 overflow-hidden transition-all duration-300 ${openDropdown === item.title ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}`}
                 >
-                    {item.dropdown.map((sub) => (
-                        <li className=" hover:bg-gray-200  flex items-center gap-3 py-2 px-2  rounded-md transition-all duration-300 " >
+                    {item.dropdown.map((sub, index) => (
+                        <li key={index} className=" hover:bg-gray-200  flex items-center gap-3 py-2 px-2  rounded-md transition-all duration-300 " >
                             {sub.title[0]}
                             <p className="text-sm opacity-0 w-0 group-hover:opacity-100  group-hover:w-auto transition-all duration-500 overflow-hidden">
 
