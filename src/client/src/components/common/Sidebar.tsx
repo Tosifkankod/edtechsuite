@@ -62,7 +62,7 @@ const Sidebar = () => {
             <p className="w-[90%] mx-auto text-sm px-3 font-medium mb-2">PAGES</p>
 
             {/* SIDEBAR ITEMS */}
-            <ul className="cursor-pointer flex flex-col gap-1">
+            <ul className="cursor-pointer flex flex-col gap-1 overflow-y-auto">
                 {sidebarItems.map((item) => {
                     return (
                         <SideBarItem item={item} openDropdown={openDropdown} toggleDropdown={toggleDropdown} />
