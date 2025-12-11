@@ -1,10 +1,20 @@
 import app from "./app";
 import config from "./config/config";
 import logger from "./utils/logger";
+import databseConfig from './config/db';
+
 const server = app.listen(config.PORT);
 
-; (() => {
+; (async () => {
   try {
+    await databseConfig.connect();
+
+    logger.info("DATABASE_CONNECTION", {
+      meta: {
+        Database: 'Database Connected'
+      }
+    })
+
     logger.info("APPLICATION_STARTED", {
       meta: {
         PORT: config.PORT,

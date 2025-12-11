@@ -4,6 +4,7 @@ import router from './router/apiRouter';
 import globalErrorHandler from './middleware/globalErrorHandler';
 import responseMessage from './constant/responseMessage';
 import httpError from './utils/httpError';
+import "reflect-metadata";
 
 const app: Application = express();
 
