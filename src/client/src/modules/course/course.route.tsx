@@ -1,13 +1,22 @@
-import CourseDetails from "./pages/courseDetails";
-import CourseEdit from "./pages/courseEdit";
+import CourseDetails from "./pages/CourseDetails";
+import CourseEdit from "./pages/CourseEdit";
+import CourseIndex from "./pages/CourseIndex";
 
 export const courseRoutes = [
     {
-        path: '/course-details',
+        path: '',
+        element: <CourseIndex />
+    },
+    {
+        path: ':courseId',
         element: <CourseDetails />
     },
     {
-        path: '/course-edit/:courseId',
+        path: ':courseId/edit',
+        element: <CourseEdit />
+    },
+    {
+        path: ':courseId/add',
         element: <CourseEdit />
     }
 ]

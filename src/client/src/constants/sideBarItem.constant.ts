@@ -18,6 +18,11 @@ export const sidebarItems: SidebarItem[] = [
         link: "/dashboard", // no dropdown
     },
     {
+        title: "Courses",
+        icon: BookIcon,
+        link: '/course'
+    },
+    {
         title: "Students",
         icon: UserIcon,
         dropdown: [
@@ -33,15 +38,6 @@ export const sidebarItems: SidebarItem[] = [
             { title: "All Trainers", link: "/trainers/all" },
             { title: "Add Trainer", link: "/trainers/add" },
             { title: "Assign Courses", link: "/trainers/assign-courses" },
-        ],
-    },
-    {
-        title: "Courses",
-        icon: BookIcon,
-        dropdown: [
-            { title: "All Courses", link: "/courses/all" },
-            { title: "Add Course", link: "/courses/add" },
-            { title: "Course Categories", link: "/courses/categories" },
         ],
     },
     {
@@ -61,12 +57,12 @@ export const sidebarItems: SidebarItem[] = [
     {
         title: "Messages",
         icon: MessageCircleIcon,
-        link: "/messages", 
+        link: "/messages",
     },
     {
         title: "Notifications",
         icon: BellIcon,
-        link: "/notifications", 
+        link: "/notifications",
     },
     {
         title: "Settings",
@@ -80,6 +76,6 @@ export const sidebarItems: SidebarItem[] = [
     {
         title: "Help",
         icon: HelpCircleIcon,
-        link: "/help", 
+        link: "/help",
     },
 ];

@@ -4,7 +4,7 @@ import { courseRoutes } from "./modules/course/course.route";
 
 export const router = createBrowserRouter([
     {
-        path: '/',
+        path: '/course',
         element: <RootLayout />,
         children: [
             ...courseRoutes

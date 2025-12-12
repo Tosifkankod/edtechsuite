@@ -2,6 +2,7 @@ import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { sidebarItems } from "../../constants/sideBarItem.constant";
 import type { SidebarItem } from "../../types/sideBarItem.type";
+import { NavLink } from "react-router-dom";
 
 type SidebarChildProps = {
     sidebarOpen: boolean,
@@ -91,9 +92,9 @@ const SideBarItem: React.FC<SidebarItemChildProps> = ({ item, openDropdown, togg
                 className=" hover:bg-gray-200  flex items-center gap-3 py-2 px-2 rounded-md transition-all duration-300" >
                 {<item.icon className="min-w-4 h-4" />}
 
-                <p className={`text-xs font-light opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto transition-all duration-500 overflow-hidden ${sidebarOpen ? "opacity-100 w-auto" : "opacity-0 w-0"}`}>
+                <NavLink to={item.link ? item.link : ''} className={`text-xs font-light opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto transition-all duration-500 overflow-hidden ${sidebarOpen ? "opacity-100 w-auto" : "opacity-0 w-0"}`}>
                     {item.title}
-                </p>
+                </NavLink>
 
                 {/* DROPDOWN ICON */}
                 {item.dropdown && (
