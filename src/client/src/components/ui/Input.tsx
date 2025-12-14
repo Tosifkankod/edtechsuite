@@ -12,13 +12,14 @@ type InputChildProps<T = string> = {
     required?: boolean,
     disable?: boolean,
     className?: string,
+    labelClassName?: string
 }
 
-const Input: React.FC<InputChildProps> = ({ type = "text", name, value, onChange, placeholder, label, required = false, disable = false, className }) => {
+const Input: React.FC<InputChildProps> = ({ type = "text", name, value, onChange, placeholder, label, required = false, disable = false, className, labelClassName }) => {
 
     const mergedInputClass = twMerge(
         clsx(
-            "bg-neutral-secondary-medium border border-gray-200 bg-gray-50 text-heading  rounded-md focus:ring-brand focus:border-brand block text-sm w-full px-3 py-2 my-1 shadow-xs placeholder:text-body",
+            "bg-neutral-secondary-medium border border-gray-200 bg-gray-50 text-heading rounded-md focus:ring-brand focus:border-brand block text-sm w-full px-3 py-2 my-1  placeholder:text-body",
             className
         )
     )
@@ -28,7 +29,7 @@ const Input: React.FC<InputChildProps> = ({ type = "text", name, value, onChange
             {
                 label &&
                 <label
-                    className="text-sm font-medium"
+                    className={twMerge("text-sm font-medium", labelClassName)}
                 >
                     {label}
                 </label>
