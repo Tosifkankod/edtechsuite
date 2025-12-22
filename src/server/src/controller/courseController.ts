@@ -8,7 +8,7 @@ export default {
     createCourse: (req: Request, res: Response, next: NextFunction) => {
         try {
 
-            httpResponse(req, res, 200, responseMessage.SUCCESS, { id: "i123" });
+            httpResponse(req, res, 200, responseMessage.SUCCESS, req.body);
         } catch (error) {
             httpError(next, error, req, 500);
         }

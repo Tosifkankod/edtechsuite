@@ -5,7 +5,7 @@ import config from "../config/config";
 import { EApplicationEnvironment } from "../constant/application";
 import logger from "./logger";
 
-export default (err: Error | unknown, req: Request, errorStatusCode: number = 500): THttpError => {
+export default (err: Error | unknown, req: Request, errorStatusCode: number = 500, data: unknown = null): THttpError => {
     const errorObj: THttpError = {
         success: false,
         statusCode: errorStatusCode,
@@ -15,7 +15,7 @@ export default (err: Error | unknown, req: Request, errorStatusCode: number = 50
             url: req.originalUrl
         },
         message: err instanceof Error ? err.message || responseMessage.SOMETHING_WENT_WRONG : responseMessage.SOMETHING_WENT_WRONG,
-        data: null,
+        data: data ? data : null,
         trace: err instanceof Error ? { error: err.stack } : null,
     }
 
@@ -30,7 +30,6 @@ export default (err: Error | unknown, req: Request, errorStatusCode: number = 50
         delete errorObj.request.ip
         delete errorObj.trace
     }
-
 
     return errorObj
 }
