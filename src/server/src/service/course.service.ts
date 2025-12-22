@@ -7,4 +7,10 @@ export class CourseService {
         const course = repo.create(data);
         return await repo.save(course);
     }
+
+    async findOne(id: number) {
+        const course = await repo.findOneBy({ courseId: id });
+        if (!course) throw new Error('Course not found');
+        return course;
+    }
 }
