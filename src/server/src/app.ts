@@ -1,6 +1,6 @@
 import express, { Application, NextFunction, Request, Response } from 'express'
 import path from 'path';
-import router from './router/apiRouter';
+import router from './router/index.router';
 import globalErrorHandler from './middleware/globalErrorHandler';
 import responseMessage from './constant/responseMessage';
 import httpError from './utils/httpError';

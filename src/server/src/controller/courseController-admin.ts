@@ -2,14 +2,15 @@ import { NextFunction, Request, Response } from "express"
 import httpResponse from "../utils/httpResponse";
 import responseMessage from "../constant/responseMessage";
 import httpError from "../utils/httpError";
-import { CourseService } from "../service/course.service";
+import { Course } from "../model/Course";
 
-const service = new CourseService();
+
 export default {
-    createCourse: async (req: Request, res: Response, next: NextFunction) => {
+    createCourse: (req: Request, res: Response, next: NextFunction) => {
         try {
-            const course = await service.create(req.body);
-            httpResponse(req, res, 200, responseMessage.SUCCESS, course);
+            
+
+            httpResponse(req, res, 200, responseMessage.SUCCESS, req.body);
         } catch (error) {
             httpError(next, error, req, 500);
         }
