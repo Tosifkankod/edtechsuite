@@ -8,10 +8,29 @@ const service = new CourseService();
 export default {
     createCourse: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const course = await service.create(req.body);
-            httpResponse(req, res, 200, responseMessage.SUCCESS, course);
+            const body = req.body;
+
+            const slugExist = await service.findOne({
+                where: {
+                    slug: body.slug
+                }
+            })
+            console.log(slugExist)
+
+            if (slugExist) {
+                return httpError(next, new Error('slug already exist'), req, 401)
+            }
+
+            const model = service.create(body)
+            const savedModel = await service.save(model);
+
+            if (!savedModel) {
+                throw new Error(responseMessage.UNABLE_TO_PROCESS)
+            }
+
+            httpResponse(req, res, 200, responseMessage.SUCCESS, savedModel);
         } catch (error) {
             httpError(next, error, req, 500);
         }
     },
-}
+} 
