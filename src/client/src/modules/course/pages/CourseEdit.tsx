@@ -2,6 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from "react"
 import Input from "../../../components/ui/Input"
 import SelectInput from "../../../components/ui/SelectInput";
 import { Save } from "lucide-react";
+import { api } from "../../../utils/api";
 
 const courseStatus = [
     {
@@ -33,7 +34,12 @@ const CourseEdit = () => {
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(courseData)
+
+        api.get('/health').then((item) => {
+            console.log(item);
+        }).catch((err) => {
+            console.log(err)
+        })
     }
 
     return (

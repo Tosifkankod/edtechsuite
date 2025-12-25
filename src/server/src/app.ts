@@ -5,13 +5,14 @@ import globalErrorHandler from './middleware/globalErrorHandler';
 import responseMessage from './constant/responseMessage';
 import httpError from './utils/httpError';
 import "reflect-metadata";
+import cors from 'cors';
 
 const app: Application = express();
 
 // Middleware
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../', 'public')));
-
+app.use(cors())
 
 // Routes
 app.use('/api/v1', router)
