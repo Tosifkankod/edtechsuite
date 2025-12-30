@@ -3,14 +3,25 @@ import { Course } from "../model/Course";
 
 const repo = AppDataSource.getRepository(Course);
 export class CourseService {
-    async create(data: Partial<Course>) {
-        const course = repo.create(data);
-        return await repo.save(course);
+    create(data: Course) {
+        let model: Course = new Course();
+        model.courseName = data.courseName;
+        model.courseDescription = data.courseDescription;
+        model.courseDuration = data.courseDuration;
+        model.courseFee = data.courseFee;
+        model.slug = data.slug;
+        return model;
     }
 
-    async findOne(id: number) {
-        const course = await repo.findOneBy({ courseId: id });
-        if (!course) throw new Error('Course not found');
-        return course;
+    async findOne(course: any) {
+        return repo.findOne(course);
+    }
+
+    async save(model: Course): Promise<Course> {
+        return repo.save(model);
+    }
+
+    async update() {
+
     }
 }

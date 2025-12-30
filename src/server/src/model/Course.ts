@@ -14,8 +14,8 @@ export class Course {
     @PrimaryGeneratedColumn({ type: "integer", name: "course_id" })
     courseId: number;
 
-    @Column("character varying", { name: "name" })
-    name: string;
+    @Column("character varying", { name: "course_name" })
+    courseName: string;
 
     @Column("character varying", { name: "slug" })
     slug: string;
