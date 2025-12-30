@@ -1,45 +1,34 @@
 import { useState, type ChangeEvent, type FormEvent } from "react"
 import Input from "../../../components/ui/Input"
-import SelectInput from "../../../components/ui/SelectInput";
 import { Save } from "lucide-react";
-import { api } from "../../../utils/api";
+import { useSaveCourse } from "../hooks/useSaveHooks";
 
-const courseStatus = [
-    {
-        label: 'active',
-        value: 'active'
-    },
-    {
-        label: 'Inactive',
-        value: 'inactive'
-    }
-]
 
 const CourseEdit = () => {
     const [courseData, setCourseData] = useState({
         courseName: "",
-        courseSlug: "",
+        slug: "afasdf",
         courseDuration: "",
         courseFee: '',
-        courseStatus: null,
         courseDescription: "",
     });
+    const saveMutation = useSaveCourse()
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setCourseData((prev) => {
             return { ...prev, [e.target.name]: e.target.value }
         })
-
     }
 
     const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
-        api.get('/health').then((item) => {
-            console.log(item);
-        }).catch((err) => {
-            console.log(err)
-        })
+        const payload = {
+            ...courseData,
+            courseDuration: Number(courseData.courseDuration),
+            courseFee: Number(courseData.courseFee),
+        };
+        console.log(payload)
+        saveMutation.mutate(payload)
     }
 
     return (
@@ -75,7 +64,7 @@ const CourseEdit = () => {
                         <div className="flex w-full gap-1">
                             <Input
                                 className="w-full border-gray-300"
-                                value={courseData.courseSlug}
+                                value={courseData.slug}
                                 name="courseSlug"
                                 type="text"
                                 onChange={handleOnChange}
@@ -127,17 +116,6 @@ const CourseEdit = () => {
                                 placeholder='5000'
                                 label="Course Fee"
                                 required={true}
-                            />
-                        </div>
-
-                        <div className="py-1 w-full"></div>
-                        <div className="flex gap-2">
-                            <SelectInput
-                                option={courseStatus}
-                                name="courseStatus"
-                                className=""
-                                label="Course Status"
-                                onChange={handleOnChange}
                             />
                         </div>
 
