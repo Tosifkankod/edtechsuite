@@ -1,13 +1,13 @@
 import { useState, type ChangeEvent, type FormEvent } from "react"
 import Input from "../../../components/ui/Input"
 import { Save } from "lucide-react";
-import { useSaveCourse } from "../hooks/useSaveHooks";
-
+import { createSlug } from "../../../utils/generateSlug";
+import { useSaveCourse } from "../hooks/useSaveCourse";
 
 const CourseEdit = () => {
     const [courseData, setCourseData] = useState({
         courseName: "",
-        slug: "afasdf",
+        slug: "",
         courseDuration: "",
         courseFee: '',
         courseDescription: "",
@@ -16,6 +16,13 @@ const CourseEdit = () => {
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setCourseData((prev) => {
+            if (e.target.name == "courseName") {
+                return {
+                    ...prev,
+                    courseName: e.target.value,
+                    slug: createSlug(e.target.value)
+                }
+            }
             return { ...prev, [e.target.name]: e.target.value }
         })
     }
@@ -27,7 +34,6 @@ const CourseEdit = () => {
             courseDuration: Number(courseData.courseDuration),
             courseFee: Number(courseData.courseFee),
         };
-        console.log(payload)
         saveMutation.mutate(payload)
     }
 
@@ -40,9 +46,9 @@ const CourseEdit = () => {
 
             <form onSubmit={handleOnSubmit} >
                 <div className="px-4 flex justify-end">
-                    <button className="bg-blue-500 gap-2 rounded-md py-2 flex items-center justify-center text-white px-3 text-sm ">
+                    <button disabled={saveMutation.isPending} className="bg-blue-500 gap-2 rounded-md py-2 flex items-center justify-center text-white px-3 text-sm ">
                         <Save className="" size={17} />
-                        Save Changes
+                        {saveMutation.isPending ? "Saving..." : "Save Changes"}
                     </button>
                 </div>
                 <div className="px-4 py-6 shadow-sm m-2 bg-white rounded-md w-1/2">
