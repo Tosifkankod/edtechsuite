@@ -16,7 +16,7 @@ export const courseRoutes = [
         element: <CourseEdit />
     },
     {
-        path: ':courseId/add',
+        path: 'add',
         element: <CourseEdit />
     }
 ]

@@ -3,8 +3,6 @@ import { api } from "../../../utils/api";
 import { queryClient } from "../../../utils/queryClient";
 
 export const useSaveCourse = () => {
-
-
     return useMutation({
         mutationFn: (courseData: any) =>
             api.post('/course', courseData),
