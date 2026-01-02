@@ -1,5 +1,5 @@
 @import "tailwindcss";
-
+@layer utilities;
 
 html,
 body {
@@ -8,4 +8,18 @@ body {
     box-sizing: border-box;
     background: #F5F5F5;
     font-family: "Inter", sans-serif;
+}
+
+@layer utilities {
+    .bg-dark-angled {
+        background: linear-gradient(195deg, rgb(66, 66, 74), rgb(25, 25, 25));
+    }
+
+    .bg-error {
+        background: linear-gradient(195deg, rgb(239, 83, 80), rgb(229, 57, 53));
+    }
+
+    .bg-success {
+        background: linear-gradient(195deg, rgb(102, 187, 106), rgb(67, 160, 71));
+    }
 }
