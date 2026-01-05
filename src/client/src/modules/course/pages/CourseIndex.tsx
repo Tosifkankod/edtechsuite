@@ -4,20 +4,35 @@ import { NavLink } from "react-router-dom"
 const CourseIndex = () => {
     return (
         <div className="h-full py-4">
-            <NavLink
-                to="add"
-                className="inline-flex w-fit bg-dark-angled gap-2 rounded-md py-2 items-center justify-center text-white px-4 text-sm"
-            >
-                <Plus width={15} />
-                Add Course
-            </NavLink>
-            <div className="px-4 py-6 shadow-sm m-2 mt-4 rounded-md bg-white">
-                <h1>Course Index Page</h1>
-                <NavLink to={'/course/234'} >course Details</NavLink>
-                <NavLink to={'/course/234/edit'} >course Edit</NavLink>
+            <div className="mb-4">
+                <h1 className="text-3xl font-medium">Manage Courses</h1>
+                <p className="text-lg text-gray-600">Manage course details, curriculum and settings.</p>
+            </div>
+
+            <div  >
+                <div className="px-4 flex justify-end">
+                    <NavLink
+                        to="add"
+                        className="inline-flex w-fit bg-dark-angled gap-2 rounded-md py-2 items-center justify-center text-white px-4 text-sm"
+                    >
+                        <Plus width={15} />
+                        Add Course
+                    </NavLink>
+                </div>
+                <div className="px-4 py-6 shadow-sm my-2 bg-white rounded-md w-full">
+
+                </div>
             </div>
         </div>
     )
 }
 
 export default CourseIndex
+
+{/* <NavLink
+                to="add"
+                className="inline-flex w-fit bg-dark-angled gap-2 rounded-md py-2 items-center justify-center text-white px-4 text-sm"
+            >
+                <Plus width={15} />
+                Add Course
+            </NavLink> */}
