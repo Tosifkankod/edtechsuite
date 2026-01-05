@@ -40,7 +40,7 @@ const CourseEdit = () => {
     return (
         <div className="h-full py-4">
             <div className="mb-4">
-                <h1 className="text-3xl font-medium">Courses Setup</h1>
+                <h1 className="text-3xl font-medium">Add/Update Course</h1>
                 <p className="text-lg text-gray-600">Manage course details, curriculum and settings.</p>
             </div>
 
@@ -51,7 +51,7 @@ const CourseEdit = () => {
                         {saveMutation.isPending ? "Saving..." : "Save Changes"}
                     </button>
                 </div>
-                <div className="px-4 py-6 shadow-sm m-2 bg-white rounded-md w-1/2">
+                <div className="px-4 py-6 shadow-sm my-2 bg-white rounded-md w-1/2">
                     <p className="text-lg mb-4 font-bold">Course Information</p>
                     <div className="mt-2">
                         <Input
