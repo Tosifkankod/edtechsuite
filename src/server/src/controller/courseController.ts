@@ -3,9 +3,20 @@ import httpResponse from "../utils/httpResponse";
 import responseMessage from "../constant/responseMessage";
 import httpError from "../utils/httpError";
 import { CourseService } from "../service/course.service";
+import { indexCourseSchema } from "../schema/courseSchema";
 
 const service = new CourseService();
 export default {
+    index: async (req: Request, res: Response, next: NextFunction) => {
+        const query = indexCourseSchema.parse(req.query)
+
+        try {
+            const result = await service.findAll(query);
+            httpResponse(req, res, 200, responseMessage.SUCCESS, result)
+        } catch (error) {
+            httpError(next, error, req, 500);
+        }
+    },
     createCourse: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const body = req.body;

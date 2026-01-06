@@ -6,17 +6,22 @@ import responseMessage from "../constant/responseMessage";
 
 export const validateResource = (schema: any) => {
     return (req: Request, _: Response, next: NextFunction) => {
-        const result = schema.safeParse(req.body);
+        const data = {
+            ...req.params,
+            ...req.query,
+            ...req.body
+        }
+
+        const result = schema.safeParse(data);
         if (!result.success) {
             const errors = result.error.issues.map((err: any) => ({
                 path: err.path.join('.'),
                 message: err.message
             }))
-            return httpError(next, new Error(responseMessage.VALIDATION_ERROR), req, 500, errors);
+            return httpError(next, new Error(responseMessage.VALIDATION_ERROR), req, 400, errors);
         }
 
         req.body = result.data;
         next();
     }
-
 }
