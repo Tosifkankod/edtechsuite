@@ -1,7 +1,37 @@
 import { Plus } from "lucide-react"
+import { useState } from "react"
 import { NavLink } from "react-router-dom"
 
+type User = {
+    firstName: string
+    lastName: string
+    age: number
+    visits: number
+    progress: number
+    status: string
+}
+
 const CourseIndex = () => {
+    const [data, setData] = useState<User[]>([
+        {
+            "firstName": "Tanner",
+            "lastName": "Linsley",
+            "age": 33,
+            "visits": 100,
+            "progress": 50,
+            "status": "Married"
+        },
+        {
+            "firstName": "Kevin",
+            "lastName": "Vandy",
+            "age": 27,
+            "visits": 200,
+            "progress": 100,
+            "status": "Single"
+        }
+    ])
+
+
     return (
         <div className="h-full py-4">
             <div className="mb-4">
@@ -21,8 +51,8 @@ const CourseIndex = () => {
                 </div>
                 <div className="px-4 py-6 shadow-sm my-2 bg-white rounded-md w-full">
 
-                </div>
 
+                </div>
             </div>
         </div >
     )
