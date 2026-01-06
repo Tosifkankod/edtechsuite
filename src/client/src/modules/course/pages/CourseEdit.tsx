@@ -2,7 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from "react"
 import Input from "../../../components/ui/Input"
 import { Save } from "lucide-react";
 import { createSlug } from "../../../utils/generateSlug";
-import { useSaveCourse } from "../hooks/useSaveCourse";
+import { useSaveCourse } from "../hooks/queryHook";
 
 const CourseEdit = () => {
     const [courseData, setCourseData] = useState({
