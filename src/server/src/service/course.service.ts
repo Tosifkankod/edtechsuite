@@ -32,7 +32,7 @@ export class CourseService {
 
         const [data, total] = await qb.getManyAndCount();
         return {
-            data,
+            courses: data,
             meta: {
                 page,
                 limit,
