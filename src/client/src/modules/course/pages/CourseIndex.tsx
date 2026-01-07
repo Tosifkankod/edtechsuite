@@ -108,28 +108,6 @@ const CourseTable = () => {
 
     return (
         <div className="space-y-4">
-            {/* <div className="flex justify-between items-center px-4">
-                <div className="flex items-center gap-2">
-                    <select
-                        value={pageSize}
-                        onChange={(e) => {
-                            setPageSize(Number(e.target.value))
-                            setPageIndex(0)
-                        }}
-                        className="border rounded px-3 py-2 border-gray-300 outline-none text-sm"
-                    >
-                        {
-                            PAGE_SIZES.map(size => (
-                                <option key={size} value={size}>
-                                    {size}
-                                </option>
-                            ))
-                        }
-                    </select>
-                    <span className="text-xs text-gray-600">entries per page</span>
-                </div>
-            </div> */}
-
             <div className="px-4">
                 <LimitDropdown
                     value={pageSize}
@@ -205,13 +183,9 @@ const CourseIndex = () => {
             </div>
             <div>
                 <div className="px-4 flex justify-end">
-                    <NavLink
-                        to="add"
-                        className="inline-flex w-fit bg-dark-angled gap-2 shadow-md hover:shadow-xl shadow-gray-300 duration-400 rounded-md py-2 items-center justify-center text-white px-4 text-sm"
-                    >
-                        <Plus width={15} />
-
-                        Add Course
+                    <NavLink to="add" className="bg-dark-angled gap-2 rounded-md py-2 flex items-center justify-center text-white px-3 text-sm ">
+                        <Plus className="" size={17} />
+                        Add Coruse
                     </NavLink>
                 </div>
                 <div className=" py-6 shadow-sm my-2 mt-8 bg-white rounded-md w-full">
