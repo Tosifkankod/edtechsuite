@@ -1,30 +1,41 @@
+import axios from "axios"
+
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1'
 
-async function http<T>(endpoint: string, { method = 'GET', body }: { method?: string, body?: any } = {}): Promise<T | null> {
-    const token = localStorage.getItem('token') || ''
+const base = axios.create({
+    baseURL: API_BASE,
+    timeout: 12000,
+    headers: {
+        "Content-Type": "application/json"
+    },
+})
 
-    const config: RequestInit = {
-        method,
-        headers: {
-            'Content-Type': 'application/json',
-            ...(token && { Authorization: `Bearer ${token}` }),
-        },
-        body: body ? JSON.stringify(body) : null,
-    }
+// Add auth token automatically if it exists
+// api.interceptors.request.use((config) => {
+//     const token = localStorage.getItem('token')
+//     if (token) {
+//         config.headers.Authorization = `Bearer ${token}`
+//     }
+//     return config
+// })
 
-    const response = await fetch(`${API_BASE}${endpoint}`, config)
 
-    if (!response.ok) {
-        const err = await response.json().catch(() => ({}))
-        throw new Error(err.message || 'Something went wrong')
-    }
-
-    return response.status === 204 ? null : response.json()
-}
+// api.interceptors.response.use(
+//     (response) => response,
+//     async (error) => {
+//         // Example: handle 401 (token expired)
+//         if (error.response?.status === 401) {
+//             // Your refresh logic here
+//             localStorage.removeItem('token')
+//             // redirect to login or something
+//         }
+//         return Promise.reject(error)
+//     }
 
 export const api = {
-    get: <T>(endpoint: string) => http<T>(endpoint),
-    post: <T>(endpoint: string, body: any) => http<T>(endpoint, { method: 'POST', body }),
-    put: <T>(endpoint: string, body: any) => http<T>(endpoint, { method: 'PUT', body }),
-    delete: <T>(endpoint: string) => http<T>(endpoint, { method: 'DELETE' }),
+    get: <T>(endpoint: string) => base.get<T>(endpoint).then((res) => res.data),
+    post: <T>(endpoint: string, body: any) => base.post<T>(endpoint, body).then((res) => res.data),
+    put: <T>(endpoint: string, body: any) => base.put<T>(endpoint, body).then((res) => res.data),
+    patch: <T>(endpoint: string, body: any) => base.patch<T>(endpoint, body).then((res) => res.data),
+    delete: <T>(endpoint: string) => base.delete<T>(endpoint).then((res) => res.data),
 }
