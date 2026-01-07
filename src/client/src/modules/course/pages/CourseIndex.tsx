@@ -128,15 +128,35 @@ const CourseTable = () => {
                                     headerGroup.headers.map(header => (
                                         <th
                                             key={header.id}
-                                            className="p-3 px-4 text-left cursor-pointer"
                                             onClick={header.column.getToggleSortingHandler()}
+                                            className="p-3 px-4 text-left cursor-pointer select-none"
                                         >
-                                            {flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext()
-                                            )}
-                                            {header.column.getIsSorted() === "asc" && " 🔼"}
-                                            {header.column.getIsSorted() === "desc" && " 🔽"}
+                                            <div className="flex items-center justify-between gap-2">
+                                                {/* Header title */}
+                                                <span>
+                                                    {flexRender(
+                                                        header.column.columnDef.header,
+                                                        header.getContext()
+                                                    )}
+                                                </span>
+
+                                                {/* Sort icons */}
+                                                <div className="flex flex-col leading-none">
+                                                    {/* Up arrow */}
+                                                    <span className={`w-0 h-0 border-l-4 border-r-4 border-b-[5px] border-l-transparent border-r-transparent ${header.column.getIsSorted() === "asc"
+                                                        ? "border-b-black"
+                                                        : "border-b-gray-300"
+                                                        }`}
+                                                    />
+
+                                                    {/* Down arrow */}
+                                                    <span className={`w-0 h-0 mt-1 border-l-4 border-r-4 border-t-[5px] border-l-transparent border-r-transparent ${header.column.getIsSorted() === "desc"
+                                                        ? "border-t-black"
+                                                        : "border-t-gray-300"
+                                                        }`}
+                                                    />
+                                                </div>
+                                            </div>
                                         </th>
                                     ))
                                 }
