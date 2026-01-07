@@ -9,7 +9,7 @@ import {
     useReactTable,
     type SortingState,
 } from "@tanstack/react-table"
-import { useState } from "react"
+import { useState, type Dispatch, type SetStateAction } from "react"
 import LimitDropdown from "../../../components/ui/LimitDropdown"
 
 export interface Course {
@@ -44,7 +44,7 @@ export const courseColumns: ColumnDef<Course>[] = [
 interface Props {
     pageIndex: number
     pageCount: number
-    setPageIndex: (page: number) => void
+    setPageIndex: Dispatch<SetStateAction<number>>
 }
 
 const PAGE_SIZES = [3, 6, 9, 12];
@@ -197,7 +197,7 @@ const CourseTable = () => {
 const CourseIndex = () => {
 
     return (
-        <div className="h-full py-4">
+        <div className="h-full py-4 scroll-smooth">
             <div className="mb-4">
                 <h1 className="text-3xl font-medium">Manage Courses</h1>
                 <p className="text-lg text-gray-600">Manage course details, curriculum and settings.</p>
