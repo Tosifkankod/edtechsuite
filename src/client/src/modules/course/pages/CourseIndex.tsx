@@ -120,7 +120,7 @@ const CourseTable = () => {
             </div>
 
             <table className="w-full rounded-md">
-                <thead className="text-sm text-gray-400 font-normal">
+                <thead className="text-xs text-gray-400 font-normal">
                     {
                         table.getHeaderGroups().map(headerGroup => (
                             <tr key={headerGroup.id}>
@@ -143,9 +143,10 @@ const CourseTable = () => {
                                                 {/* Sort icons */}
                                                 <div className="flex flex-col leading-none">
                                                     {/* Up arrow */}
-                                                    <span className={`w-0 h-0 border-l-4 border-r-4 border-b-[5px] border-l-transparent border-r-transparent ${header.column.getIsSorted() === "asc"
-                                                        ? "border-b-black"
-                                                        : "border-b-gray-300"
+                                                    <span className={`w-0 h-0 border-l-4 border-r-4 border-b-[5px] border-l-transparent border-r-transparent 
+                                                    ${header.column.getIsSorted() === "asc"
+                                                            ? "border-b-black"
+                                                            : "border-b-gray-300"
                                                         }`}
                                                     />
 
