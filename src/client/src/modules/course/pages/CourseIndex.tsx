@@ -1,23 +1,23 @@
-import { Plus } from "lucide-react"
-import { NavLink } from "react-router-dom"
-import { useCourses } from "../hooks/queryHook"
-import type { ColumnDef } from "@tanstack/react-table"
+import { Plus } from "lucide-react";
+import { NavLink } from "react-router-dom";
+import { useCourses } from "../hooks/queryHook";
+import type { ColumnDef } from "@tanstack/react-table";
 import {
     flexRender,
     getCoreRowModel,
     getSortedRowModel,
     useReactTable,
     type SortingState,
-} from "@tanstack/react-table"
-import { useState, type Dispatch, type SetStateAction } from "react"
-import LimitDropdown from "../../../components/ui/LimitDropdown"
+} from "@tanstack/react-table";
+import { useState, type Dispatch, type SetStateAction } from "react";
+import LimitDropdown from "../../../components/ui/LimitDropdown";
 
 export interface Course {
-    courseId: number
-    courseName: string
-    courseFee: number
-    courseDuration: number
-    createdAt: string
+    courseId: number;
+    courseName: string;
+    courseFee: number;
+    courseDuration: number;
+    createdAt: string;
 }
 
 export const courseColumns: ColumnDef<Course>[] = [
@@ -39,56 +39,74 @@ export const courseColumns: ColumnDef<Course>[] = [
         header: "Created At",
         cell: ({ row }) => new Date(row.original.createdAt).toLocaleDateString(),
     },
-]
+];
 
 interface Props {
-    pageIndex: number
-    pageCount: number
-    setPageIndex: Dispatch<SetStateAction<number>>
+    pageIndex: number;
+    pageCount: number;
+    setPageIndex: Dispatch<SetStateAction<number>>;
 }
 
-const PAGE_SIZES = [3, 6, 9, 12];
+export const TablePagination = ({ pageIndex, pageCount, setPageIndex, }: Props) => {
+    if (pageCount <= 1) return null;
 
-export const TablePagination = ({ pageIndex, pageCount, setPageIndex }: Props) => {
     return (
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end items-center gap-2">
+            {/* Prev */}
             <button
-                className="px-3 py-1 border rounded"
+                className="px-3 py-1 border rounded disabled:opacity-50"
                 disabled={pageIndex === 0}
-                onClick={() => setPageIndex(prev => prev - 1)}
+                onClick={() => setPageIndex((prev) => prev - 1)}
             >
                 Prev
             </button>
 
-            <span className="px-3 py-1">
-                Page {pageIndex + 1} of {pageCount}
-            </span>
+            {/* Page Numbers */}
+            {Array.from({ length: pageCount }).map((_, index) => {
+                const isActive = index === pageIndex;
 
+                return (
+                    <button
+                        key={index}
+                        onClick={() => setPageIndex(index)}
+                        className={`px-3 py-1 border rounded
+              ${isActive
+                                ? "bg-dark-angled text-white border-black"
+                                : "bg-white hover:bg-gray-100"
+                            }
+            `}
+                    >
+                        {index + 1}
+                    </button>
+                );
+            })}
+
+            {/* Next */}
             <button
-                className="px-3 py-1 border rounded"
+                className="px-3 py-1 border rounded disabled:opacity-50"
                 disabled={pageIndex + 1 >= pageCount}
-                onClick={() => setPageIndex(prev => prev + 1)}
+                onClick={() => setPageIndex((prev) => prev + 1)}
             >
                 Next
             </button>
         </div>
-    )
-}
+    );
+};
 
 const CourseTable = () => {
-    const [pageIndex, setPageIndex] = useState(0)
-    const [pageSize, setPageSize] = useState(10)
-    const [sorting, setSorting] = useState<SortingState>([])
+    const [pageIndex, setPageIndex] = useState(0);
+    const [pageSize, setPageSize] = useState(10);
+    const [sorting, setSorting] = useState<SortingState>([]);
 
-    const sortBy = sorting[0]?.id
-    const sortOrder = sorting[0]?.desc ? "DESC" : "ASC"
+    const sortBy = sorting[0]?.id;
+    const sortOrder = sorting[0]?.desc ? "DESC" : "ASC";
 
     const { data, isLoading } = useCourses({
         page: pageIndex + 1,
         limit: pageSize,
         sortBy,
-        order: sortOrder
-    })
+        order: sortOrder,
+    });
 
     const table = useReactTable({
         data: data?.courses ?? [],
@@ -102,9 +120,9 @@ const CourseTable = () => {
         onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
-    })
+    });
 
-    if (isLoading) return <p>Loading...</p>
+    if (isLoading) return <p>Loading...</p>;
 
     return (
         <div className="space-y-4">
@@ -112,8 +130,8 @@ const CourseTable = () => {
                 <LimitDropdown
                     value={pageSize}
                     onChange={(val) => {
-                        setPageSize(val)
-                        setPageIndex(0)
+                        setPageSize(val);
+                        setPageIndex(0);
                     }}
                 />
                 <span className="text-xs ml-2 text-gray-400">entries per page</span>
@@ -121,67 +139,62 @@ const CourseTable = () => {
 
             <table className="w-full rounded-md">
                 <thead className="text-xs text-gray-400 font-normal">
-                    {
-                        table.getHeaderGroups().map(headerGroup => (
-                            <tr key={headerGroup.id}>
-                                {
-                                    headerGroup.headers.map(header => (
-                                        <th
-                                            key={header.id}
-                                            onClick={header.column.getToggleSortingHandler()}
-                                            className="p-3 px-4 text-left cursor-pointer select-none"
-                                        >
-                                            <div className="flex items-center justify-between gap-2">
-                                                {/* Header title */}
-                                                <span>
-                                                    {flexRender(
-                                                        header.column.columnDef.header,
-                                                        header.getContext()
-                                                    )}
-                                                </span>
+                    {table.getHeaderGroups().map((headerGroup) => (
+                        <tr key={headerGroup.id}>
+                            {headerGroup.headers.map((header) => (
+                                <th
+                                    key={header.id}
+                                    onClick={header.column.getToggleSortingHandler()}
+                                    className="p-3 px-4 text-left cursor-pointer select-none"
+                                >
+                                    <div className="flex items-center justify-between gap-2">
+                                        {/* Header title */}
+                                        <span>
+                                            {flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
+                                            )}
+                                        </span>
 
-                                                {/* Sort icons */}
-                                                <div className="flex flex-col leading-none">
-                                                    {/* Up arrow */}
-                                                    <span className={`w-0 h-0 border-l-4 border-r-4 border-b-[5px] border-l-transparent border-r-transparent 
-                                                    ${header.column.getIsSorted() === "asc"
-                                                            ? "border-b-black"
-                                                            : "border-b-gray-300"
-                                                        }`}
-                                                    />
+                                        {/* Sort icons */}
+                                        <div className="flex flex-col leading-none">
+                                            {/* Up arrow */}
+                                            <span
+                                                className={`w-0 h-0 border-l-4 border-r-4 border-b-[5px] border-l-transparent border-r-transparent 
+                                                    ${header.column.getIsSorted() ===
+                                                        "asc"
+                                                        ? "border-b-black"
+                                                        : "border-b-gray-300"
+                                                    }`}
+                                            />
 
-                                                    {/* Down arrow */}
-                                                    <span className={`w-0 h-0 mt-1 border-l-4 border-r-4 border-t-[5px] border-l-transparent border-r-transparent ${header.column.getIsSorted() === "desc"
-                                                        ? "border-t-black"
-                                                        : "border-t-gray-300"
-                                                        }`}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </th>
-                                    ))
-                                }
-                            </tr>
-                        ))
-                    }
+                                            {/* Down arrow */}
+                                            <span
+                                                className={`w-0 h-0 mt-1 border-l-4 border-r-4 border-t-[5px] border-l-transparent border-r-transparent ${header.column.getIsSorted() === "desc"
+                                                    ? "border-t-black"
+                                                    : "border-t-gray-300"
+                                                    }`}
+                                            />
+                                        </div>
+                                    </div>
+                                </th>
+                            ))}
+                        </tr>
+                    ))}
                 </thead>
                 <tbody>
-                    {
-                        table.getRowModel().rows.map(row => (
-                            <tr key={row.id} className="text-sm border-y border-gray-100 text-gray-500">
-                                {
-                                    row.getVisibleCells().map(cell => (
-                                        <td key={cell.id} className="p-3 px-4">
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            )}
-                                        </td>
-                                    ))
-                                }
-                            </tr>
-                        ))
-                    }
+                    {table.getRowModel().rows.map((row) => (
+                        <tr
+                            key={row.id}
+                            className="text-sm border-y border-gray-100 text-gray-500"
+                        >
+                            {row.getVisibleCells().map((cell) => (
+                                <td key={cell.id} className="p-3 px-4">
+                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
                 </tbody>
             </table>
 
@@ -191,20 +204,24 @@ const CourseTable = () => {
                 setPageIndex={setPageIndex}
             />
         </div>
-    )
-}
+    );
+};
 
 const CourseIndex = () => {
-
     return (
         <div className="h-full py-4 scroll-smooth">
             <div className="mb-4">
                 <h1 className="text-3xl font-medium">Manage Courses</h1>
-                <p className="text-lg text-gray-600">Manage course details, curriculum and settings.</p>
+                <p className="text-lg text-gray-600">
+                    Manage course details, curriculum and settings.
+                </p>
             </div>
             <div>
                 <div className="px-4 flex justify-end">
-                    <NavLink to="add" className="bg-dark-angled gap-2 rounded-md py-2 flex items-center justify-center text-white px-3 text-sm ">
+                    <NavLink
+                        to="add"
+                        className="bg-dark-angled gap-2 rounded-md py-2 flex items-center justify-center text-white px-3 text-sm "
+                    >
                         <Plus className="" size={17} />
                         Add Coruse
                     </NavLink>
@@ -213,9 +230,8 @@ const CourseIndex = () => {
                     <CourseTable />
                 </div>
             </div>
-        </div >
-    )
-}
+        </div>
+    );
+};
 
-export default CourseIndex
-
+export default CourseIndex;
