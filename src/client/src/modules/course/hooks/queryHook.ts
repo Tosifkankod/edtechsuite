@@ -1,7 +1,17 @@
 // Add this hook somewhere (e.g., hooks/useCourse.ts)
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../../../utils/api'
 import { useToast } from '../../../components/ui/Alert'
+
+const QUERY_KEY = "courses";
+
+type CourseQueryParams = {
+    page?: number;
+    limit?: number;
+    search?: string;
+    sortBy?: string;
+    order?: 'ASC' | 'DESC';
+};
 
 export const useSaveCourse = () => {
     const queryClient = useQueryClient()
@@ -12,7 +22,7 @@ export const useSaveCourse = () => {
             api.post('/course', courseData),
 
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['courses'] })
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY] })
             toast("course saved", 'success');
         },
         onError: (err) => {
@@ -20,3 +30,15 @@ export const useSaveCourse = () => {
         },
     })
 }
+
+export const useCourses = (params: CourseQueryParams) => {
+    return useQuery({
+        queryKey: [QUERY_KEY, params],
+        queryFn: async () => {
+            const response = await api.get('/course')
+        }
+    })
+}
+
+
+

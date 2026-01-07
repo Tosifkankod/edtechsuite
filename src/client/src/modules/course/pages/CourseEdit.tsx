@@ -2,7 +2,7 @@ import { useState, type ChangeEvent, type FormEvent } from "react"
 import Input from "../../../components/ui/Input"
 import { Save } from "lucide-react";
 import { createSlug } from "../../../utils/generateSlug";
-import { useSaveCourse } from "../hooks/useSaveCourse";
+import { useSaveCourse } from "../hooks/queryHook";
 
 const CourseEdit = () => {
     const [courseData, setCourseData] = useState({
@@ -40,7 +40,7 @@ const CourseEdit = () => {
     return (
         <div className="h-full py-4">
             <div className="mb-4">
-                <h1 className="text-3xl font-medium">Add/Update Course</h1>
+                <h1 className="text-3xl font-medium">Create/Update Course</h1>
                 <p className="text-lg text-gray-600">Manage course details, curriculum and settings.</p>
             </div>
 
