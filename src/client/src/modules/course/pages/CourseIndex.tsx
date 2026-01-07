@@ -1,72 +1,119 @@
-import { type ColumnDef, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable, type RowModel, type Table, flexRender } from "@tanstack/react-table"
 import { Plus } from "lucide-react"
-import { useMemo, useState } from "react"
 import { NavLink } from "react-router-dom"
+import { useCourses } from "../hooks/queryHook"
+import type { ColumnDef } from "@tanstack/react-table"
+import {
+    flexRender,
+    getCoreRowModel,
+    getSortedRowModel,
+    useReactTable,
+    type SortingState,
+} from "@tanstack/react-table"
+import { useState } from "react"
 
-type User = {
-    firstName: string
-    lastName: string
-    age: number
-    visits: number
-    progress: number
-    status: string
+export interface Course {
+    courseId: number
+    courseName: string
+    courseFee: number
+    courseDuration: number
+    createdAt: string
 }
 
-const CourseIndex = () => {
-    const [data] = useState<User[]>([
-        { firstName: "Tanner", lastName: "Linsley", age: 33, visits: 100, progress: 50, status: "Married" },
-        { firstName: "Kevin", lastName: "Vandy", age: 27, visits: 200, progress: 100, status: "Single" },
-        { firstName: "John", lastName: "Doe", age: 29, visits: 150, progress: 70, status: "Single" },
-        { firstName: "Jane", lastName: "Smith", age: 35, visits: 300, progress: 90, status: "Married" },
-        { firstName: "Alex", lastName: "Brown", age: 24, visits: 80, progress: 40, status: "Single" },
-        { firstName: "Emily", lastName: "Clark", age: 31, visits: 220, progress: 85, status: "Married" },
-        { firstName: "Michael", lastName: "Scott", age: 45, visits: 777, progress: 95, status: "Married" },
-        { firstName: "Dwight", lastName: "Schrute", age: 38, visits: 400, progress: 88, status: "Single" },
-    ])
-    const [globalFilter, setGlobalFilter] = useState("")
+export const courseColumns: ColumnDef<Course>[] = [
+    {
+        accessorKey: "courseName",
+        header: "Course Name",
+    },
+    {
+        accessorKey: "courseFee",
+        header: "Fee",
+        cell: ({ row }) => `₹ ${row.original.courseFee}`,
+    },
+    {
+        accessorKey: "courseDuration",
+        header: "Duration (Days)",
+    },
+    {
+        accessorKey: "createdAt",
+        header: "Created At",
+        cell: ({ row }) => new Date(row.original.createdAt).toLocaleDateString(),
+    },
+]
 
-    const columns = useMemo<ColumnDef<User>[]>(() => [
-        {
-            accessorKey: "firstName",
-            header: "First Name",
-        },
-        {
-            accessorKey: "lastName",
-            header: "Last Name",
-        },
-        {
-            accessorKey: "age",
-            header: "Age",
-        },
-        {
-            accessorKey: "visits",
-            header: "Visits",
-        },
-        {
-            accessorKey: "progress",
-            header: "Progress",
-        },
-        {
-            accessorKey: "status",
-            header: "Status",
-        },
-    ],
-        []
-    )
+const CourseTable = () => {
+    const [pageIndex, setPageIndex] = useState(0)
+    const [sorting, setSorting] = useState<SortingState>([])
+    const sortBy = sorting[0]?.id
+    const sortOrder = sorting[0]?.desc ? "DESC" : "ASC"
 
+    const { data, isLoading } = useCourses({
+        page: pageIndex + 1,
+        limit: 10,
+        sortBy,
+        order: sortOrder
+    })
+    console.log(data)
     const table = useReactTable({
-        data,
-        columns,
+        data: data?.data ?? [],
+        columns: courseColumns,
+        pageCount: data?.meta?.totalPages ?? -1,
+        manualPagination: true,
+        manualSorting: true,
         state: {
-            globalFilter,
+            sorting,
         },
-        onGlobalFilterChange: setGlobalFilter,
+        onSortingChange: setSorting,
         getCoreRowModel: getCoreRowModel(),
-        getFilteredRowModel: getFilteredRowModel(),
         getSortedRowModel: getSortedRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
     })
 
+    if (isLoading) return <p>Loading...</p>
+
+    return (
+        <div className="space-y-4">
+            <table className="w-full border rounded-md">
+                <thead className="bg-gray-100">
+                    {table.getHeaderGroups().map(headerGroup => (
+                        <tr key={headerGroup.id}>
+                            {headerGroup.headers.map(header => (
+                                <th
+                                    key={header.id}
+                                    className="p-3 text-left cursor-pointer"
+                                    onClick={header.column.getToggleSortingHandler()}
+                                >
+                                    {flexRender(
+                                        header.column.columnDef.header,
+                                        header.getContext()
+                                    )}
+                                    {header.column.getIsSorted() === "asc" && " 🔼"}
+                                    {header.column.getIsSorted() === "desc" && " 🔽"}
+                                </th>
+                            ))}
+                        </tr>
+                    ))}
+                </thead>
+
+                <tbody>
+                    {table.getRowModel().rows.map(row => (
+                        <tr key={row.id} className="border-t">
+                            {row.getVisibleCells().map(cell => (
+                                <td key={cell.id} className="p-3">
+                                    {flexRender(
+                                        cell.column.columnDef.cell,
+                                        cell.getContext()
+                                    )}
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    )
+}
+
+
+const CourseIndex = () => {
     return (
         <div className="h-full py-4">
             <div className="mb-4">
@@ -85,82 +132,7 @@ const CourseIndex = () => {
                     </NavLink>
                 </div>
                 <div className="px-4 py-6 shadow-sm my-2 bg-white rounded-md w-full">
-                    <div className="p-6">
-                        {/* Search */}
-                        <div className="mb-4">
-                            <input
-                                value={globalFilter ?? ""}
-                                onChange={(e) => setGlobalFilter(e.target.value)}
-                                placeholder="Search users..."
-                                className="w-64 rounded border px-3 py-2 text-sm focus:outline-none focus:ring"
-                            />
-                        </div>
-
-                        {/* Table */}
-                        <div className="overflow-x-auto rounded border">
-                            <table className="w-full border-collapse">
-                                <thead className="bg-gray-100">
-                                    {table.getHeaderGroups().map((headerGroup) => (
-                                        <tr key={headerGroup.id}>
-                                            {headerGroup.headers.map((header) => (
-                                                <th
-                                                    key={header.id}
-                                                    onClick={header.column.getToggleSortingHandler()}
-                                                    className="cursor-pointer border-b px-4 py-2 text-left text-sm font-semibold"
-                                                >
-                                                    {flexRender(
-                                                        header.column.columnDef.header,
-                                                        header.getContext()
-                                                    )}
-                                                    {{
-                                                        asc: " 🔼",
-                                                        desc: " 🔽",
-                                                    }[header.column.getIsSorted() as string] ?? null}
-                                                </th>
-                                            ))}
-                                        </tr>
-                                    ))}
-                                </thead>
-
-                                <tbody>
-                                    {table.getRowModel().rows.map((row) => (
-                                        <tr key={row.id} className="hover:bg-gray-50">
-                                            {row.getVisibleCells().map((cell) => (
-                                                <td key={cell.id} className="border-b px-4 py-2 text-sm">
-                                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                                </td>
-                                            ))}
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                        </div>
-
-                        {/* Pagination */}
-                        <div className="mt-4 flex items-center gap-2">
-                            <button
-                                onClick={() => table.previousPage()}
-                                disabled={!table.getCanPreviousPage()}
-                                className="rounded border px-3 py-1 text-sm disabled:opacity-50"
-                            >
-                                Previous
-                            </button>
-
-                            <button
-                                onClick={() => table.nextPage()}
-                                disabled={!table.getCanNextPage()}
-                                className="rounded border px-3 py-1 text-sm disabled:opacity-50"
-                            >
-                                Next
-                            </button>
-
-                            <span className="ml-4 text-sm">
-                                Page {table.getState().pagination.pageIndex + 1} of{" "}
-                                {table.getPageCount()}
-                            </span>
-                        </div>
-                    </div>
-
+                    <CourseTable />
                 </div>
             </div>
         </div >

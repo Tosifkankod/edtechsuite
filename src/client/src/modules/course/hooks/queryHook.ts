@@ -1,5 +1,5 @@
 // Add this hook somewhere (e.g., hooks/useCourse.ts)
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { keepPreviousData, partialMatchKey, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../../../utils/api'
 import { useToast } from '../../../components/ui/Alert'
 
@@ -35,10 +35,11 @@ export const useCourses = (params: CourseQueryParams) => {
     return useQuery({
         queryKey: [QUERY_KEY, params],
         queryFn: async () => {
-            const response = await api.get('/course')
-        }
-    })
+            const res = await api.get('/course', {
+                params,
+            });
+            return res.data.data;
+        },
+        placeholderData: (previousData) => previousData
+    });
 }
-
-
-

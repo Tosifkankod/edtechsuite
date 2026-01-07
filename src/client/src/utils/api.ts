@@ -2,7 +2,7 @@ import axios from "axios"
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/v1'
 
-const base = axios.create({
+export const api = axios.create({
     baseURL: API_BASE,
     timeout: 12000,
     headers: {
@@ -32,10 +32,16 @@ const base = axios.create({
 //         return Promise.reject(error)
 //     }
 
-export const api = {
-    get: <T>(endpoint: string) => base.get<T>(endpoint).then((res) => res.data),
-    post: <T>(endpoint: string, body: any) => base.post<T>(endpoint, body).then((res) => res.data),
-    put: <T>(endpoint: string, body: any) => base.put<T>(endpoint, body).then((res) => res.data),
-    patch: <T>(endpoint: string, body: any) => base.patch<T>(endpoint, body).then((res) => res.data),
-    delete: <T>(endpoint: string) => base.delete<T>(endpoint).then((res) => res.data),
-}
+// export const api = {
+//     get: <T>(endpoint: string) => base.get<T>(endpoint).then((res) => res.data),
+//     post: <T>(endpoint: string, body: any) => base.post<T>(endpoint, body).then((res) => res.data),
+//     put: <T>(endpoint: string, body: any) => base.put<T>(endpoint, body).then((res) => res.data),
+//     patch: <T>(endpoint: string, body: any) => base.patch<T>(endpoint, body).then((res) => res.data),
+//     delete: <T>(endpoint: string) => base.delete<T>(endpoint).then((res) => res.data),
+// }
+
+
+
+
+
+
