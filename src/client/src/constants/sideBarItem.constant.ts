@@ -25,11 +25,7 @@ export const sidebarItems: SidebarItem[] = [
     {
         title: "Students",
         icon: UserIcon,
-        dropdown: [
-            { title: "All Students", link: "/students/all" },
-            { title: "Add Student", link: "/students/add" },
-            { title: "Attendance", link: "/students/attendance" },
-        ],
+        link: '/student'
     },
     {
         title: "Trainers",

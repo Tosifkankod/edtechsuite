@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useCourses } from "../hooks/queryHook";
 import type { ColumnDef } from "@tanstack/react-table";
@@ -47,55 +47,61 @@ interface Props {
     setPageIndex: Dispatch<SetStateAction<number>>;
 }
 
-export const TablePagination = ({ pageIndex, pageCount, setPageIndex, }: Props) => {
-    if (pageCount <= 1) return null;
+export const TablePagination = ({
+    pageIndex,
+    pageCount,
+    setPageIndex,
+}: Props) => {
+    if (pageCount <= 1) return null
 
     return (
-        <div className="flex justify-end items-center gap-2">
-            {/* Prev */}
-            <button
-                className="px-3 py-1 border rounded disabled:opacity-50"
-                disabled={pageIndex === 0}
-                onClick={() => setPageIndex((prev) => prev - 1)}
-            >
-                Prev
-            </button>
+        <div className="flex justify-end px-4 items-center gap-2">
+            {/* Prev (only if available) */}
+            {pageIndex > 0 && (
+                <button
+                    className="w-8 h-8 cursor-pointer border p-2 rounded-full flex items-center hover:bg-gray-100 justify-center border-gray-400"
+                    onClick={() => setPageIndex(prev => prev - 1)}
+                >
+                    <ChevronLeft size={16} />
+                </button>
+            )}
 
             {/* Page Numbers */}
             {Array.from({ length: pageCount }).map((_, index) => {
-                const isActive = index === pageIndex;
+                const isActive = index === pageIndex
 
                 return (
                     <button
                         key={index}
                         onClick={() => setPageIndex(index)}
-                        className={`px-3 py-1 border rounded
+                        className={`w-8 h-8 text-sm flex items-center justify-center  border rounded-full
               ${isActive
                                 ? "bg-dark-angled text-white border-black"
-                                : "bg-white hover:bg-gray-100"
+                                : "bg-white text-gray-400 border-gray-400 hover:bg-gray-100"
                             }
             `}
                     >
                         {index + 1}
                     </button>
-                );
+                )
             })}
 
-            {/* Next */}
-            <button
-                className="px-3 py-1 border rounded disabled:opacity-50"
-                disabled={pageIndex + 1 >= pageCount}
-                onClick={() => setPageIndex((prev) => prev + 1)}
-            >
-                Next
-            </button>
+            {/* Next (only if available) */}
+            {pageIndex + 1 < pageCount && (
+                <button
+                    className="w-8 h-8 p-2 cursor-pointer flex items-center justify-center border rounded-full hover:bg-gray-100 border-gray-400"
+                    onClick={() => setPageIndex(prev => prev + 1)}
+                >
+                    <ChevronRight size={16} />
+                </button>
+            )}
         </div>
-    );
-};
+    )
+}
 
 const CourseTable = () => {
     const [pageIndex, setPageIndex] = useState(0);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(5);
     const [sorting, setSorting] = useState<SortingState>([]);
 
     const sortBy = sorting[0]?.id;

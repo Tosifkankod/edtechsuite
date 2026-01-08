@@ -30,7 +30,6 @@ const Sidebar: React.FC<SidebarChildProps> = ({ sidebarOpen }) => {
             ${sidebarOpen ? 'w-56' : 'w-20'}
             rounded-md h-full border border-gray-200 shadow-sm flex flex-col`} >
 
-            {/* LOGO AREA */}
             < div className="w-[80%] text-center pt-4 mx-auto flex text-lg" >
                 <p className="font-medium group-hover:w-0 overflow-hidden group-hover:opacity-0">
                     EXS
@@ -49,7 +48,6 @@ const Sidebar: React.FC<SidebarChildProps> = ({ sidebarOpen }) => {
 
             <hr className="my-3 w-[90%] mx-auto text-gray-300" />
 
-            {/* PROFILE SECTION */}
             <ul className="cursor-pointer">
                 <li className="py-2 rounded-md w-[90%] mx-auto p-1">
                     <a className="hover:bg-gray-200 transition-bg duration-300 rounded-md w-full mx-auto p-1 py-2 flex items-center gap-2">
@@ -71,7 +69,6 @@ const Sidebar: React.FC<SidebarChildProps> = ({ sidebarOpen }) => {
             <hr className="my-3 w-[90%] mx-auto text-gray-300" />
             <p className="w-[90%] mx-auto text-sm px-3 font-medium mb-2">PAGES</p>
 
-            {/* SIDEBAR ITEMS */}
             <ul className="cursor-pointer flex flex-col gap-1 overflow-y-auto">
                 {sidebarItems.map((item, index) => {
                     return (
@@ -86,7 +83,6 @@ const Sidebar: React.FC<SidebarChildProps> = ({ sidebarOpen }) => {
 const SideBarItem: React.FC<SidebarItemChildProps> = ({ item, openDropdown, toggleDropdown, sidebarOpen }) => {
     return (
         <li key={item.title} className="w-[90%] mx-auto">
-            {/* MAIN LINK */}
             <div
                 onClick={() => item.dropdown && toggleDropdown(item.title)}
                 className=" hover:bg-gray-200  flex items-center gap-3 py-2 px-2 rounded-md transition-all duration-300" >
@@ -96,7 +92,6 @@ const SideBarItem: React.FC<SidebarItemChildProps> = ({ item, openDropdown, togg
                     {item.title}
                 </NavLink>
 
-                {/* DROPDOWN ICON */}
                 {item.dropdown && (
                     <ChevronDown
                         className={`ml-auto transition-transform duration-300 ${openDropdown === item.title ? "rotate-180" : ""} ${sidebarOpen ? "opacity-100 w-4" : "w-0 opacity-0"} opacity-0 w-0 group-hover:opacity-100 group-hover:w-4 `}
