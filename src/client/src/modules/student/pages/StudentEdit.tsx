@@ -63,7 +63,7 @@ const StudentEdit = () => {
                         />
                     </div>
                     <div className='mt-2'>
-                        <SelectInput label='Student Type' onChange={(value) => { setStatus(value) }} name={'status'} value={status} option={[{ label: "working", value: 'WRK' }, { label: "student", value: 'STD' }]} />
+                        <SelectInput label='Academic or Employment Status' onChange={(value) => { setStatus(value) }} name={'status'} value={status} option={[{ label: "working", value: 'WRK' }, { label: "student", value: 'STD' }]} />
                     </div>
                 </div>
             </form>
