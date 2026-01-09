@@ -14,10 +14,10 @@ const StudentIndex = () => {
                 <div className="px-4 flex justify-end">
                     <NavLink
                         to="add"
-                        className="bg-dark-angled gap-2 rounded-md py-2 flex items-center justify-center text-white px-3 text-sm "
+                        className="bg-dark-angled gap-2 rounded-md py-2 flex items-center justify-center text-white px-3 text-sm"
                     >
                         <Plus className="" size={17} />
-                        Add Coruse
+                        Add Student
                     </NavLink>
                 </div>
                 <div className=" py-6 shadow-sm my-2 mt-8 bg-white rounded-md w-full">
