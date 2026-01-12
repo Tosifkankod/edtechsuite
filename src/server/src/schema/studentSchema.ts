@@ -1,0 +1,11 @@
+import z from "zod";
+import { EmploymentStatusEnum, GenderEnum } from "../types/enums";
+
+export const studentSchema = z.object({
+    studentName: z.string().min(3, { message: "student Name must be 3 characters long" }),
+    email: z.email(),
+    phone: z.string().min(3, { message: "phone number should be 10 digits" }).max(3, { message: "phone number should be 10 digits" }),
+    address: z.string().optional(),
+    gender: z.enum(GenderEnum).default(GenderEnum.M),
+    employmentStatus: z.enum(EmploymentStatusEnum).default(EmploymentStatusEnum.W),
+}) 
