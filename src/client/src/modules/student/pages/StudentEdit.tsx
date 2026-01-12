@@ -1,10 +1,26 @@
 import { Save } from 'lucide-react'
 import Input from '../../../components/ui/Input'
 import SelectInput from '../../../components/ui/SelectInput'
-import { useState } from 'react';
+import { useState, type ChangeEvent } from 'react';
 
 const StudentEdit = () => {
-    const [status, setStatus] = useState<string | number>("");
+    const [studentData, setStudentData] = useState({
+        studentName: "",
+        email: "",
+        phone: "",
+        address: "",
+        gender: "",
+        employmentStatus: ""
+    })
+
+    const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setStudentData((prev) => {
+            return {
+                ...prev,
+                [e.target.name]: e.target.value
+            }
+        })
+    }
 
 
     return (
@@ -25,10 +41,10 @@ const StudentEdit = () => {
                     <div className="mt-2 flex gap-2">
                         <Input
                             type='text'
-                            name='name'
+                            name='studentName'
                             label='Full Name'
-                            value={''}
-                            onChange={() => { }}
+                            value={studentData.studentName}
+                            onChange={handleOnChange}
                             placeholder='John Doe'
 
                         />
@@ -36,8 +52,8 @@ const StudentEdit = () => {
                             type='email'
                             name='email'
                             label='Email address'
-                            value={''}
-                            onChange={() => { }}
+                            value={studentData.email}
+                            onChange={handleOnChange}
                             placeholder='johndoe@gmail.com'
 
                         />
@@ -45,10 +61,10 @@ const StudentEdit = () => {
                     <div className="mt-2 flex gap-2">
                         <Input
                             type='text'
-                            name='name'
+                            name='phone'
                             label='Phone Number'
-                            value={''}
-                            onChange={() => { }}
+                            value={studentData.phone}
+                            onChange={handleOnChange}
                             placeholder='00000 00000'
                         />
 
@@ -56,14 +72,43 @@ const StudentEdit = () => {
                             type='text'
                             name='address'
                             label='Address'
-                            value={''}
-                            onChange={() => { }}
+                            value={studentData.address}
+                            onChange={handleOnChange}
                             placeholder='Mumbai 451235'
 
                         />
                     </div>
-                    <div className='mt-2'>
-                        <SelectInput label='Academic or Employment Status' onChange={(value) => { setStatus(value) }} name={'status'} value={status} option={[{ label: "working", value: 'WRK' }, { label: "student", value: 'STD' }]} />
+                    <div className='mt-2 flex gap-2'>
+                        <SelectInput
+                            label='Gender'
+                            onChange={(value) => {
+                                setStudentData((prev) => {
+                                    return {
+                                        ...prev,
+                                        gender: value.toString()
+                                    }
+                                })
+                            }}
+                            name={'gender'}
+                            value={studentData.gender}
+                            option={
+                                [{ label: "male", value: 'M' }, { label: "female", value: 'F' }]
+                            }
+                        />
+                        <SelectInput
+                            label='Academic or Employment Status'
+                            onChange={(value) => {
+                                setStudentData((prev) => {
+                                    return {
+                                        ...prev,
+                                        employmentStatus: value.toString()
+                                    }
+                                })
+                            }}
+                            name={'employmentStatus'}
+                            value={studentData.employmentStatus}
+                            option={[{ label: "working", value: 'W' }, { label: "student", value: 'S' }]}
+                        />
                     </div>
                 </div>
             </form>
