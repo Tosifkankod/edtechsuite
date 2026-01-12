@@ -1,7 +1,7 @@
 import { Router } from "express";
 import apiController from "../controller/apiController";
 import courseRouter from './course.router';
-import studentRouter from './course.router';
+import studentRouter from './student.router';
 
 const router = Router();
 
