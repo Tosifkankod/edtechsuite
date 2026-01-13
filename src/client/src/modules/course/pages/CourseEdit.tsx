@@ -57,75 +57,66 @@ const CourseEdit = () => {
                         <Input
                             value={courseData.courseName}
                             name="courseName"
-                            className="border-gray-300" type="text"
+                            className="border-gray-300 mb-0" type="text"
                             onChange={handleOnChange}
                             placeholder='Full Stack'
                             label='Course Name'
                             required={true}
                         />
+                        <span className="text-xs font-normal text-red-600">Email must be a valid email address</span>
 
-                        <div className="py-1 w-full"></div>
+                        <div className="py-2 w-full"></div>
 
-                        <p className="text-sm font-medium mt-2">Slug</p>
                         <div className="flex w-full gap-1">
-                            <Input
-                                className="w-full border-gray-300"
-                                value={courseData.slug}
-                                name="courseSlug"
-                                type="text"
-                                onChange={handleOnChange}
-                                placeholder='Full Stack'
-                                required={true}
-                            />
-                            <Input
-                                className="w-full"
-                                value={''}
-                                name="course Name"
-                                type="text"
-                                onChange={handleOnChange}
-                                placeholder='Full Stack'
-                                disable={true}
-                            />
+                            <div className="w-full">
+                                <Input
+                                    className="w-full border-gray-300 mb-0"
+                                    value={courseData.slug}
+                                    name="courseSlug"
+                                    label="Slug"
+                                    type="text"
+                                    onChange={handleOnChange}
+                                    placeholder='Full Stack'
+                                    required={true}
+                                />
+                                <span className="text-xs font-normal text-red-600">slug already exist</span>
+                            </div>
+
                         </div>
 
-                        <div className="py-1 w-full"></div>
+                        <div className="py-2 w-full"></div>
 
-                        <div className="flex items-end gap-2">
-                            <Input
-                                className=""
-                                value={courseData.courseDuration}
-                                name="courseDuration"
-                                type="number"
-                                onChange={handleOnChange}
-                                placeholder='duration in days'
-                                label="Course Duration"
-                                required={true}
-                            />
-                            <Input
-                                className="flex-1"
-                                name="days"
-                                onChange={handleOnChange}
-                                labelClassName=""
-                                placeholder='days'
-                                label=""
-                                value=""
-                                type="input"
-                                disable={true}
-                            />
+                        <div className="flex gap-2">
+                            <div className="w-full">
+                                <Input
+                                    className="mb-0"
+                                    value={courseData.courseDuration}
+                                    name="courseDuration"
+                                    type="number"
+                                    onChange={handleOnChange}
+                                    placeholder='duration in days'
+                                    label="Course Duration"
+                                    required={true}
+                                />
+                                <span className="text-xs font-normal text-red-600">provide valid date</span>
+                            </div>
 
-                            <Input
-                                className="flex-1"
-                                value={courseData.courseFee}
-                                name="courseFee"
-                                type="number"
-                                onChange={handleOnChange}
-                                placeholder='5000'
-                                label="Course Fee"
-                                required={true}
-                            />
+                            <div className="w-full" >
+                                <Input
+                                    className="mb-0"
+                                    value={courseData.courseFee}
+                                    name="courseFee"
+                                    type="number"
+                                    onChange={handleOnChange}
+                                    placeholder='5000'
+                                    label="Course Fee"
+                                    required={true}
+                                />
+                                <span className="text-xs font-normal text-red-600">provide valid fee</span>
+                            </div>
                         </div>
 
-                        <div className="py-1 w-full"></div>
+                        <div className="py-2 w-full"></div>
 
                         <div>
                             <Input

@@ -1,5 +1,5 @@
 // Add this hook somewhere (e.g., hooks/useCourse.ts)
-import { keepPreviousData, partialMatchKey, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../../../utils/api'
 import { useToast } from '../../../components/ui/Alert'
 

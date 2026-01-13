@@ -1,7 +1,8 @@
 import { Save } from 'lucide-react'
 import Input from '../../../components/ui/Input'
 import SelectInput from '../../../components/ui/SelectInput'
-import { useState, type ChangeEvent } from 'react';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
+import { useSaveStudent } from '../hooks/queryHooks';
 
 const StudentEdit = () => {
     const [studentData, setStudentData] = useState({
@@ -12,6 +13,7 @@ const StudentEdit = () => {
         gender: "",
         employmentStatus: ""
     })
+    const saveMutation = useSaveStudent();
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
         setStudentData((prev) => {
@@ -22,6 +24,10 @@ const StudentEdit = () => {
         })
     }
 
+    const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        saveMutation.mutate(studentData)
+    }
 
     return (
         <div className="h-full py-4 scroll-smooth">
@@ -29,7 +35,7 @@ const StudentEdit = () => {
                 <h1 className="text-3xl font-medium">Add Student</h1>
                 <p className="text-lg text-gray-600">fill all required information</p>
             </div>
-            <form  >
+            <form onSubmit={handleOnSubmit} >
                 <div className="px-4 flex justify-end">
                     <button className="bg-dark-angled gap-2 rounded-md py-2 flex items-center justify-center text-white px-3 text-sm ">
                         <Save className="" size={17} />
