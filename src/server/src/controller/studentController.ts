@@ -18,7 +18,7 @@ export default {
             })
 
             if (studentExist) {
-                return httpError(next, new Error('student already registered'), req, 401)
+                return httpError(next, new Error('student already registered'), req, 401, {})
             }
 
             const model = service.create(body);

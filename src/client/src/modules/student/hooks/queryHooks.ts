@@ -14,14 +14,13 @@ export const useSaveStudent = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY] })
             toast('student saved', 'success');
-        },
-        onError: (error) => {
-            console.log(error)
-            let message = 'Something went wrong';
-            if (error instanceof AxiosError) {
-                message = error.response?.data?.message || error.response?.data?.error || error.message;
-            }
-            toast(message, 'error');
         }
+        // onError: (error) => {
+        //     let message = 'Something went wrong';
+        //     if (error instanceof AxiosError) {
+        //         message = error.response?.data?.message || error.response?.data?.error || error.message;
+        //     }
+        //     toast(message, 'error');
+        // }
     })
 }
