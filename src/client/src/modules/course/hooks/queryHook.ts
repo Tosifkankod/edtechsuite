@@ -2,16 +2,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { api } from '../../../utils/api'
 import { useToast } from '../../../components/ui/Alert'
+import type { queryParams } from '../../../types/commonTypes';
 
 const QUERY_KEY = "courses";
 
-type CourseQueryParams = {
-    page?: number;
-    limit?: number;
-    search?: string;
-    sortBy?: string;
-    order?: 'ASC' | 'DESC';
-};
+
 
 export const useSaveCourse = () => {
     const queryClient = useQueryClient()
@@ -31,7 +26,7 @@ export const useSaveCourse = () => {
     })
 }
 
-export const useCourses = (params: CourseQueryParams) => {
+export const useCourses = (params: queryParams) => {
     return useQuery({
         queryKey: [QUERY_KEY, params],
         queryFn: async () => {

@@ -47,11 +47,7 @@ interface Props {
     setPageIndex: Dispatch<SetStateAction<number>>;
 }
 
-export const TablePagination = ({
-    pageIndex,
-    pageCount,
-    setPageIndex,
-}: Props) => {
+export const TablePagination = ({ pageIndex, pageCount, setPageIndex, }: Props) => {
     if (pageCount <= 1) return null
 
     return (

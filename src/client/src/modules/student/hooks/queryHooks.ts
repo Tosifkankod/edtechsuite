@@ -1,7 +1,8 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation, usePrefetchQuery, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useToast } from "../../../components/ui/Alert";
 import { api } from "../../../utils/api";
 import { AxiosError } from "axios";
+import type { queryParams } from "../../../types/commonTypes";
 
 const QUERY_KEY = "student";
 
@@ -23,4 +24,19 @@ export const useSaveStudent = () => {
         //     toast(message, 'error');
         // }
     })
+}
+
+
+export const useStudents = (params: queryParams) => {
+    return useQuery({
+        queryKey: [QUERY_KEY, params],
+        queryFn: async () => {
+            const res = await api.get('/student', {
+                params
+            });
+            return res.data.data
+        },
+        placeholderData: (previousData) => previousData
+    })
+
 }
