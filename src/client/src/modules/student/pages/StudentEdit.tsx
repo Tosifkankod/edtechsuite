@@ -40,14 +40,6 @@ const StudentEdit = () => {
         setFormErrors({});
         try {
             await saveMutation.mutateAsync(studentData)
-            setStudentData({
-                studentName: "",
-                email: "",
-                phone: "",
-                address: "",
-                gender: "",
-                employmentStatus: ""
-            })
         } catch (error) {
             console.log("error")
             if (error instanceof AxiosError) {
@@ -59,6 +51,14 @@ const StudentEdit = () => {
                 }
             }
         }
+        setStudentData({
+            studentName: "",
+            email: "",
+            phone: "",
+            address: "",
+            gender: "",
+            employmentStatus: ""
+        })
     }
 
     return (

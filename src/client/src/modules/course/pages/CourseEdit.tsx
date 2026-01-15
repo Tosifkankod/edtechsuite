@@ -3,6 +3,8 @@ import Input from "../../../components/ui/Input"
 import { Save } from "lucide-react";
 import { createSlug } from "../../../utils/generateSlug";
 import { useSaveCourse } from "../hooks/queryHook";
+import { useToast } from "../../../components/ui/Alert";
+import { AxiosError } from "axios";
 
 const CourseEdit = () => {
     const [courseData, setCourseData] = useState({
@@ -12,7 +14,10 @@ const CourseEdit = () => {
         courseFee: '',
         courseDescription: "",
     });
+    const [formErors, setFormErrors] = useState<Record<string, string>>({});
     const saveMutation = useSaveCourse();
+    const { toast } = useToast();
+
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setCourseData((prev) => {
@@ -27,14 +32,26 @@ const CourseEdit = () => {
         })
     }
 
-    const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const payload = {
             ...courseData,
             courseDuration: Number(courseData.courseDuration),
             courseFee: Number(courseData.courseFee),
         };
-        saveMutation.mutate(payload)
+        setFormErrors({});
+        try {
+            await saveMutation.mutateAsync(payload)
+        } catch (error) {
+            if (error instanceof AxiosError) {
+                toast(error.response?.data.message, 'error');
+                const errors = error.response?.data.error;
+                console.log(errors)
+                if (errors) {
+                    setFormErrors(errors);
+                }
+            }
+        }
     }
 
     return (
@@ -63,7 +80,10 @@ const CourseEdit = () => {
                             label='Course Name'
                             required={true}
                         />
-                        <span className="text-xs font-normal text-red-600">Email must be a valid email address</span>
+                        {
+                            formErors.courseName &&
+                            <span className="text-xs font-normal text-red-600">{formErors.courseName}</span>
+                        }
 
                         <div className="py-2 w-full"></div>
 
@@ -79,7 +99,10 @@ const CourseEdit = () => {
                                     placeholder='Full Stack'
                                     required={true}
                                 />
-                                <span className="text-xs font-normal text-red-600">slug already exist</span>
+                                {
+                                    formErors.courseSlug &&
+                                    <span className="text-xs font-normal text-red-600">{formErors.courseSlug}</span>
+                                }
                             </div>
 
                         </div>
@@ -98,7 +121,10 @@ const CourseEdit = () => {
                                     label="Course Duration"
                                     required={true}
                                 />
-                                <span className="text-xs font-normal text-red-600">provide valid date</span>
+                                {
+                                    formErors.courseDuration &&
+                                    <span className="text-xs font-normal text-red-600">{formErors.courseDuration}</span>
+                                }
                             </div>
 
                             <div className="w-full" >
@@ -112,12 +138,13 @@ const CourseEdit = () => {
                                     label="Course Fee"
                                     required={true}
                                 />
-                                <span className="text-xs font-normal text-red-600">provide valid fee</span>
+                                {
+                                    formErors.courseFee &&
+                                    <span className="text-xs font-normal text-red-600">{formErors.courseFee}</span>
+                                }
                             </div>
                         </div>
-
                         <div className="py-2 w-full"></div>
-
                         <div>
                             <Input
                                 label="Course Description"
@@ -127,6 +154,10 @@ const CourseEdit = () => {
                                 onChange={handleOnChange}
                                 placeholder="Course Description"
                             />
+                            {
+                                formErors.courseDescription &&
+                                <span className="text-xs font-normal text-red-600">{formErors.courseDescription}</span>
+                            }
                         </div>
                     </div>
                 </div>

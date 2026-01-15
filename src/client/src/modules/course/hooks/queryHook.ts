@@ -19,10 +19,7 @@ export const useSaveCourse = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY] })
             toast("course saved", 'success');
-        },
-        onError: (err) => {
-            toast(err.message, 'error');
-        },
+        }
     })
 }
 
