@@ -1,18 +1,12 @@
 import { AppDataSource } from "../config/data-source";
 import { Course } from "../model/Course";
+import { commonQueryParams } from "../types/types";
 
 const repo = AppDataSource.getRepository(Course);
 
-type FindCoursesParams = {
-    page: number
-    limit: number
-    search?: string
-    sortBy?: string
-    order?: "ASC" | "DESC"
-}
 export class CourseService {
 
-    async findAll(params: FindCoursesParams) {
+    async findAll(params: commonQueryParams) {
         const { page, limit, search, sortBy, order } = params;
 
         const qb = repo.createQueryBuilder('course');

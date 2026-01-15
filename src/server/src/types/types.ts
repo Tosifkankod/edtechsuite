@@ -24,3 +24,12 @@ export type THttpError = {
     error: unknown,
     trace?: object | null
 }
+
+
+export type commonQueryParams = {
+    page: number
+    limit: number
+    search?: string
+    sortBy?: string
+    order?: "ASC" | "DESC"
+}

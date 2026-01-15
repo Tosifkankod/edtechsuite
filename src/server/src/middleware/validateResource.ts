@@ -11,8 +11,8 @@ export const validateResource = (schema: any) => {
             ...req.query,
             ...req.body
         }
-
         const result = schema.safeParse(data);
+
         if (!result.success) {
             const errors = result.error.issues.reduce(
                 (acc: Record<string, string>, err: any) => {
@@ -23,7 +23,7 @@ export const validateResource = (schema: any) => {
             );
             return httpError(next, new Error(responseMessage.VALIDATION_ERROR), req, 400, errors);
         }
-
+        
         req.body = result.data;
         next();
     }
