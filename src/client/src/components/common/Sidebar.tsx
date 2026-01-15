@@ -82,15 +82,15 @@ const Sidebar: React.FC<SidebarChildProps> = ({ sidebarOpen }) => {
 
 const SideBarItem: React.FC<SidebarItemChildProps> = ({ item, openDropdown, toggleDropdown, sidebarOpen }) => {
     return (
-        <li key={item.title} className="w-[90%] mx-auto">
+        <NavLink to={item.link ? item.link : ''} key={item.title} className="w-[90%] hover:bg-gray-200  rounded-md overflow-hidden mx-auto">
             <div
                 onClick={() => item.dropdown && toggleDropdown(item.title)}
-                className=" hover:bg-gray-200  flex items-center gap-3 py-2 px-2 rounded-md transition-all duration-300" >
+                className="   flex items-center gap-3 py-2 px-2 rounded-md transition-all duration-300" >
                 {<item.icon className="min-w-4 h-4" />}
 
-                <NavLink to={item.link ? item.link : ''} className={`text-xs font-light opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto transition-all duration-500 overflow-hidden ${sidebarOpen ? "opacity-100 w-auto" : "opacity-0 w-0"}`}>
+                <span className={`text-xs font-light opacity-0 w-0 group-hover:opacity-100 group-hover:w-auto transition-all duration-500 overflow-hidden ${sidebarOpen ? "opacity-100 w-auto" : "opacity-0 w-0"}`}>
                     {item.title}
-                </NavLink>
+                </span>
 
                 {item.dropdown && (
                     <ChevronDown
@@ -114,7 +114,7 @@ const SideBarItem: React.FC<SidebarItemChildProps> = ({ item, openDropdown, togg
                 </ul>
             )}
 
-        </li>
+        </NavLink>
     )
 
 }

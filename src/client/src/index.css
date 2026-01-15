@@ -15,6 +15,11 @@ body {
         background: linear-gradient(195deg, rgb(66, 66, 74), rgb(25, 25, 25));
     }
 
+    .active {
+        background: linear-gradient(195deg, rgb(66, 66, 74), rgb(25, 25, 25));
+        color: white
+    }
+
     .bg-error {
         background: linear-gradient(195deg, rgb(239, 83, 80), rgb(229, 57, 53));
     }
