@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { motion } from "framer-motion";
 import { Menu, User, Settings } from "lucide-react";
 import useScrollState from "../../hooks/useScrollAnimation";
+import BreadCrumb from "../ui/BreadCrumb";
 
 type ChildProps = {
     setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>
@@ -25,7 +26,8 @@ const Header: React.FC<ChildProps> = ({ setSidebarOpen }) => {
         >
             <div className="left text-sm flex items-center">
                 <Menu onClick={() => setSidebarOpen(prev => !prev)} className="w-4 font-extrabold mr-3 stroke-2" />
-                <p><span className="text-gray-500">Dashboard</span> / <b>Analytics</b></p>
+                {/* <p><span className="text-gray-500">Dashboard</span> / <b>Analytics</b></p> */}
+                <BreadCrumb />
             </div>
 
             <div className="right flex items-center gap-3">
