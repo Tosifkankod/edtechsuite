@@ -11,6 +11,7 @@ import {
 } from "@tanstack/react-table";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import LimitDropdown from "../../../components/ui/LimitDropdown";
+import ActionDropdown from "../../../components/ui/ActionDropdown";
 
 export interface Course {
     courseId: number;
@@ -39,6 +40,15 @@ export const courseColumns: ColumnDef<Course>[] = [
         header: "Created At",
         cell: ({ row }) => new Date(row.original.createdAt).toLocaleDateString(),
     },
+    {
+        id: 'actions',
+        header: "Action",
+        enableSorting: false,
+        cell: ({ row }) => {
+            const course = row.original;
+            return <ActionDropdown course={course} />;
+        }
+    }
 ];
 
 interface Props {

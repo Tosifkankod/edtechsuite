@@ -4,6 +4,7 @@ import { useState, type Dispatch, type SetStateAction } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useStudents } from '../hooks/queryHooks';
 import LimitDropdown from '../../../components/ui/LimitDropdown';
+import ActionDropdown from '../../../components/ui/ActionDropdown';
 
 export interface Student {
     studentId: number;
