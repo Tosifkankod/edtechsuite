@@ -1,59 +1,56 @@
-import { useState } from "react"
-import type { Course } from "../../modules/course/pages/CourseIndex"
-import { MoreVertical, Pencil, Trash2 } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import { Pencil, Trash2 } from "lucide-react";
+import type { Course } from "../../modules/course/pages/CourseIndex";
 
-const ActionDropdown = (course: { course: Course }) => {
-    const [open, setOpen] = useState(false);
-
-    return (
-        <div className="relative inline-block">
-            {/* Trigger */}
-            <button
-                onClick={() => { setOpen(!open) }}
-                className="p-2 rounded-md hover:bg-gray-100"
-            >
-                <MoreVertical size={16} />
-            </button>
-
-            {/* Dropdown */}
-            {
-                open && (
-                    <div
-                        className="absolute left-0 z-20 mt-2 w-32 rounded-md bg-white shadow-md"
-                        onMouseLeave={(e) => { e.stopPropagation(); setOpen(false) }}
-                    >
-
-                        {/* Edit */}
-                        <NavLink
-                            to={`edit/${'3'}`}
-                            className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-gray-100"
-                        >
-                            <Pencil size={14} />
-                            Edit
-                        </NavLink>
-
-                        {/* delete */}
-                        <button
-                            onClick={() => {
-                                setOpen(false);
-                                if (confirm("Delete this course?")) {
-                                    console.log("DELETE:");
-                                    // deleteCourse(course.courseId)
-                                }
-                            }}
-                            className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50"
-                        >
-                            <Trash2 size={14} />
-                            Delete
-                        </button>
-
-                    </div>
-                )
-            }
-
-        </div>
-    )
+interface ActionDropdownProps {
+    course: Course;
+    isOpen: boolean;
+    onOpenChange: (open: boolean) => void;
 }
 
-export default ActionDropdown
+export default function ActionDropdown({ course, isOpen, onOpenChange }: ActionDropdownProps) {
+    return (
+        <div className="relative inline-block text-left">
+            <button
+                type="button"
+                className="p-2 rounded-md hover:bg-gray-100"
+                onClick={() => onOpenChange(!isOpen)}
+            >⋮</button>
+            {
+                isOpen && (
+                    <div
+                        className="absolute left-0 z-20 mt-1 w-25 rounded-md bg-white shadow-md"
+                        onBlur={(e) => {
+                            if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                                onOpenChange(false);
+                            }
+                        }}
+                        tabIndex={-1}
+                    >
+                        <div className="py-1">
+                            <button
+                                className="flex items-center gap-2 w-full px-2 py-2 text-left text-xs text-gray-700 hover:bg-gray-100"
+                                onClick={() => {
+                                    console.log("Edit course", course.courseId);
+                                    onOpenChange(false);
+                                }}
+                            >
+                                <Pencil size={14} />
+                                Edit
+                            </button>
+
+                            <button
+                                className="flex gap-2 items-center w-full px-2 py-2 text-left text-xs text-red-700 hover:bg-gray-100"
+                                onClick={() => {
+                                    console.log("Delete course", course.courseId);
+                                    onOpenChange(false);
+                                }}
+                            >
+                                <Trash2 size={14} />
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                )}
+        </div>
+    );
+}

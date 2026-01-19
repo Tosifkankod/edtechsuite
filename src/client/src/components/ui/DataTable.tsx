@@ -1,26 +1,21 @@
-import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
-import { NavLink } from "react-router-dom";
-import { useCourses } from "../hooks/queryHook";
-import type { ColumnDef } from "@tanstack/react-table";
-import {
-    flexRender,
-    getCoreRowModel,
-    getSortedRowModel,
-    useReactTable,
-    type SortingState,
-} from "@tanstack/react-table";
+import { flexRender, getCoreRowModel, getSortedRowModel, useReactTable, type ColumnDef, type SortingState } from "@tanstack/react-table";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, type Dispatch, type SetStateAction } from "react";
-import LimitDropdown from "../../../components/ui/LimitDropdown";
-import ActionDropdown from "../../../components/ui/ActionDropdown";
+import LimitDropdown from "./LimitDropdown";
 
-export interface Course {
-    courseId: number;
-    courseName: string;
-    courseFee: number;
-    courseDuration: number;
-    createdAt: string;
+type DataTableProps<TData> = {
+    columns: ColumnDef<TData, any>[];
+    data: TData[];
+    totalPages: number;
+    pageIndex: number;
+    setPageIndex: Dispatch<SetStateAction<number>>;
+    pageSize: number;
+    setPageSize: Dispatch<SetStateAction<number>>;
+    sorting: any;
+    setSorting: Dispatch<SetStateAction<SortingState>>;
+    optionActionRowId: number;
+    setOptionActionRowId: Dispatch<SetStateAction<number>>;
 }
-
 
 interface Props {
     pageIndex: number;
@@ -28,7 +23,8 @@ interface Props {
     setPageIndex: Dispatch<SetStateAction<number>>;
 }
 
-export const TablePagination = ({ pageIndex, pageCount, setPageIndex, }: Props) => {
+
+const TablePagination = ({ pageIndex, pageCount, setPageIndex, }: Props) => {
     if (pageCount <= 1) return null
 
     return (
@@ -76,69 +72,14 @@ export const TablePagination = ({ pageIndex, pageCount, setPageIndex, }: Props) 
     )
 }
 
-const CourseTable = () => {
-    const [pageIndex, setPageIndex] = useState(0);
-    const [pageSize, setPageSize] = useState(5);
-    const [sorting, setSorting] = useState<SortingState>([]);
-    const [openActionRowId, setOpenActionRowId] = useState<number | null>(null);
-
-    const courseColumns: ColumnDef<Course>[] = [
-        {
-            accessorKey: "courseName",
-            header: "Course Name",
-        },
-        {
-            accessorKey: "courseFee",
-            header: "Fee",
-            cell: ({ row }) => `₹ ${row.original.courseFee}`,
-        },
-        {
-            accessorKey: "courseDuration",
-            header: "Duration (Days)",
-        },
-        {
-            accessorKey: "createdAt",
-            header: "Created At",
-            cell: ({ row }) => new Date(row.original.createdAt).toLocaleDateString(),
-        },
-        {
-            id: 'actions',
-            header: "Action",
-            enableSorting: false,
-            cell: ({ row }) => {
-                const course = row.original;
-                const isOpen = openActionRowId === course.courseId;
-                return (
-                    <ActionDropdown
-                        course={course}
-                        isOpen={isOpen}
-                        onOpenChange={(shouldOpen: boolean) => {
-                            if (shouldOpen) {
-                                setOpenActionRowId(course.courseId);
-                            } else {
-                                setOpenActionRowId(null);
-                            }
-                        }}
-                    />
-                );
-            }
-        }
-    ];
-
+const DataTable = <TData,>({ columns, data, totalPages, pageIndex, pageSize, sorting, optionActionRowId, setPageIndex, setSorting, setPageSize, setOptionActionRowId, }: DataTableProps<TData>) => {
     const sortBy = sorting[0]?.id;
     const sortOrder = sorting[0]?.desc ? "DESC" : "ASC";
 
-    const { data, isLoading } = useCourses({
-        page: pageIndex + 1,
-        limit: pageSize,
-        sortBy,
-        order: sortOrder,
-    });
-
     const table = useReactTable({
-        data: data?.courses ?? [],
-        columns: courseColumns,
-        pageCount: data?.meta?.totalPages ?? -1,
+        data: data ?? [],
+        columns: columns,
+        pageCount: totalPages,
         manualPagination: true,
         manualSorting: true,
         state: {
@@ -148,8 +89,6 @@ const CourseTable = () => {
         getCoreRowModel: getCoreRowModel(),
         getSortedRowModel: getSortedRowModel(),
     });
-
-    if (isLoading) return <p>Loading...</p>;
 
     return (
         <div className="space-y-4">
@@ -175,7 +114,6 @@ const CourseTable = () => {
                                     className="p-3 px-4 text-left cursor-pointer select-none"
                                 >
                                     <div className="flex items-center justify-between gap-2">
-                                        {/* Header title */}
                                         <span>
                                             {flexRender(
                                                 header.column.columnDef.header,
@@ -183,19 +121,16 @@ const CourseTable = () => {
                                             )}
                                         </span>
 
-                                        {/* Sort icons */}
                                         <div className="flex flex-col leading-none">
-                                            {/* Up arrow */}
                                             <span
                                                 className={`w-0 h-0 border-l-4 border-r-4 border-b-[5px] border-l-transparent border-r-transparent 
-                                                    ${header.column.getIsSorted() ===
+                                                            ${header.column.getIsSorted() ===
                                                         "asc"
                                                         ? "border-b-black"
                                                         : "border-b-gray-300"
                                                     }`}
                                             />
 
-                                            {/* Down arrow */}
                                             <span
                                                 className={`w-0 h-0 mt-1 border-l-4 border-r-4 border-t-[5px] border-l-transparent border-r-transparent ${header.column.getIsSorted() === "desc"
                                                     ? "border-t-black"
@@ -231,34 +166,7 @@ const CourseTable = () => {
                 setPageIndex={setPageIndex}
             />
         </div>
-    );
-};
+    )
+}
 
-const CourseIndex = () => {
-    return (
-        <div className="h-full py-4 scroll-smooth">
-            <div className="mb-4">
-                <h1 className="text-3xl font-medium">Manage Courses</h1>
-                <p className="text-lg text-gray-600">
-                    Manage course details, curriculum and settings.
-                </p>
-            </div>
-            <div>
-                <div className="px-4 flex justify-end">
-                    <NavLink
-                        to="add"
-                        className="bg-dark-angled gap-2 rounded-md py-2 flex items-center justify-center text-white px-3 text-sm "
-                    >
-                        <Plus className="" size={17} />
-                        Add Coruse
-                    </NavLink>
-                </div>
-                <div className=" py-6 shadow-sm my-2 mt-8 bg-white rounded-md w-full">
-                    <CourseTable />
-                </div>
-            </div>
-        </div>
-    );
-};
-
-export default CourseIndex;
+export default DataTable
