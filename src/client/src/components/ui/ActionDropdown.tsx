@@ -1,12 +1,12 @@
 import { Pencil, Trash2 } from "lucide-react";
 
-interface ActionDropdownProps<TData extends { id: string }> {
+interface ActionDropdownProps<TData extends { id: number }> {
     data: TData;
     isOpen: boolean;
     onOpenChange: (open: boolean) => void;
 }
 
-export default function ActionDropdown<TData extends { id: string; },>({ data, isOpen, onOpenChange }: ActionDropdownProps<TData>) {
+export default function ActionDropdown<TData extends { id: number; },>({ data, isOpen, onOpenChange }: ActionDropdownProps<TData>) {
     return (
         <div className="relative inline-block text-left">
             <button

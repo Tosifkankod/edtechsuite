@@ -14,8 +14,7 @@ import LimitDropdown from "../../../components/ui/LimitDropdown";
 import ActionDropdown from "../../../components/ui/ActionDropdown";
 
 export interface Course {
-    id: string,
-    courseId: number;
+    id: number,
     courseName: string;
     courseFee: number;
     courseDuration: number;
@@ -109,14 +108,14 @@ const CourseTable = () => {
             enableSorting: false,
             cell: ({ row }) => {
                 const course = row.original;
-                const isOpen = openActionRowId === course.courseId;
+                const isOpen = openActionRowId === course.id;
                 return (
                     <ActionDropdown<Course>
                         data={course}
                         isOpen={isOpen}
                         onOpenChange={(shouldOpen: boolean) => {
                             if (shouldOpen) {
-                                setOpenActionRowId(course.courseId);
+                                setOpenActionRowId(course.id);
                             } else {
                                 setOpenActionRowId(null);
                             }

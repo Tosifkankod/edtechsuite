@@ -2,10 +2,10 @@ import { Column, CreateDateColumn, Entity, Index, PrimaryGeneratedColumn, Update
 import { EmploymentStatusEnum, GenderEnum } from "../types/enums";
 
 @Entity("student", { schema: "public" })
-@Index("student_id_unique", ['studentId'], { unique: true })
+@Index("student_id_unique", ['id'], { unique: true })
 export class Student {
-    @PrimaryGeneratedColumn({ type: "integer", name: "course_id" })
-    studentId: number;
+    @PrimaryGeneratedColumn({ type: "integer", name: "id" })
+    id: number;
 
     @Column("character varying", { name: "student_name" })
     studentName: string;

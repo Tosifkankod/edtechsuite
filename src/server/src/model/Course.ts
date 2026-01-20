@@ -11,8 +11,8 @@ import {
 @Index("course_slug_unique", ["slug"], { unique: true })
 export class Course {
 
-    @PrimaryGeneratedColumn({ type: "integer", name: "course_id" })
-    courseId: number;
+    @PrimaryGeneratedColumn({ type: "integer", name: "id" })
+    id: number;
 
     @Column("character varying", { name: "course_name" })
     courseName: string;
