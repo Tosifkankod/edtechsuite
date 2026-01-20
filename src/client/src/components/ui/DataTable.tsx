@@ -132,71 +132,74 @@ const DataTable = <TData,>({
             </div>
 
             {/* Table */}
-            <div className=" rounded-md border">
-                <table className="w-full">
-                    <thead className="text-xs text-gray-400 font-normal bg-gray-50">
-                        {table.getHeaderGroups().map((headerGroup) => (
-                            <tr key={headerGroup.id}>
-                                {headerGroup.headers.map((header) => (
-                                    <th
-                                        key={header.id}
-                                        onClick={header.column.getToggleSortingHandler()}
-                                        className="p-3 px-4 text-left cursor-pointer select-none"
-                                    >
-                                        <div className="flex items-center justify-between gap-2">
-                                            <span>
-                                                {flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
-                                            </span>
-
-                                            {header.column.getCanSort() && (
-                                                <div className="flex flex-col leading-none">
-                                                    <span
-                                                        className={`w-0 h-0 border-l-4 border-r-4 border-b-[5px] border-l-transparent border-r-transparent ${header.column.getIsSorted() === "asc"
-                                                            ? "border-b-black"
-                                                            : "border-b-gray-300"
-                                                            }`}
-                                                    />
-                                                    <span
-                                                        className={`w-0 h-0 mt-1 border-l-4 border-r-4 border-t-[5px] border-l-transparent border-r-transparent ${header.column.getIsSorted() === "desc"
-                                                            ? "border-t-black"
-                                                            : "border-t-gray-300"
-                                                            }`}
-                                                    />
-                                                </div>
+            <table className="w-full rounded-md table-fixed">
+                <thead className="text-xs text-gray-400 font-normal">
+                    {table.getHeaderGroups().map((headerGroup) => (
+                        <tr key={headerGroup.id}>
+                            {headerGroup.headers.map((header) => (
+                                <th
+                                    key={header.id}
+                                    onClick={header.column.getToggleSortingHandler()}
+                                    className="p-3 px-4 text-left cursor-pointer select-none"
+                                    style={{ width: header.getSize() }}
+                                >
+                                    <div className="flex items-center justify-between gap-2">
+                                        <span>
+                                            {flexRender(
+                                                header.column.columnDef.header,
+                                                header.getContext()
                                             )}
-                                        </div>
-                                    </th>
+                                        </span>
+
+                                        {header.column.getCanSort() && (
+                                            <div className="flex flex-col leading-none">
+                                                <span
+                                                    className={`w-0 h-0 border-l-4 border-r-4 border-b-[5px] border-l-transparent border-r-transparent ${header.column.getIsSorted() === "asc"
+                                                        ? "border-b-black"
+                                                        : "border-b-gray-300"
+                                                        }`}
+                                                />
+                                                <span
+                                                    className={`w-0 h-0 mt-1 border-l-4 border-r-4 border-t-[5px] border-l-transparent border-r-transparent ${header.column.getIsSorted() === "desc"
+                                                        ? "border-t-black"
+                                                        : "border-t-gray-300"
+                                                        }`}
+                                                />
+                                            </div>
+                                        )}
+                                    </div>
+                                </th>
+                            ))}
+                        </tr>
+                    ))}
+                </thead>
+                <tbody>
+                    {table.getRowModel().rows?.length === 0 ? (
+                        <tr>
+                            <td colSpan={columns.length} className="text-center py-10 text-gray-500">
+                                {emptyMessage}
+                            </td>
+                        </tr>
+                    ) : (
+                        table.getRowModel().rows.map((row) => (
+                            <tr
+                                key={row.id}
+                                className="text-sm border-y border-gray-100 text-gray-600 "
+                            >
+                                {row.getVisibleCells().map((cell) => (
+                                    <td
+                                        key={cell.id}
+                                        className="p-3 px-4"
+                                        style={{ width: cell.column.getSize() }}
+                                    >
+                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                    </td>
                                 ))}
                             </tr>
-                        ))}
-                    </thead>
-                    <tbody>
-                        {table.getRowModel().rows?.length === 0 ? (
-                            <tr>
-                                <td colSpan={columns.length} className="text-center py-10 text-gray-500">
-                                    {emptyMessage}
-                                </td>
-                            </tr>
-                        ) : (
-                            table.getRowModel().rows.map((row) => (
-                                <tr
-                                    key={row.id}
-                                    className="text-sm border-y border-gray-100 text-gray-600 hover:bg-gray-50/70"
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <td key={cell.id} className="p-3 px-4">
-                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                        </td>
-                                    ))}
-                                </tr>
-                            ))
-                        )}
-                    </tbody>
-                </table>
-            </div>
+                        ))
+                    )}
+                </tbody>
+            </table>
 
             {/* Pagination */}
             <TablePagination

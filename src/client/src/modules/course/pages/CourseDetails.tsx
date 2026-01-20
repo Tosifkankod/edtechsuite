@@ -5,8 +5,7 @@ import { useCourses } from '../hooks/queryHook';
 import ActionDropdown from '../../../components/ui/ActionDropdown';
 
 export interface Course {
-    id: string,
-    courseId: number;
+    id: number,
     courseName: string;
     courseFee: number;
     courseDuration: number;
@@ -32,6 +31,7 @@ const CourseDetails = () => {
         {
             accessorKey: "courseName",
             header: "Course Name",
+            size: 400
         },
         {
             accessorKey: "courseFee",
@@ -53,14 +53,14 @@ const CourseDetails = () => {
             enableSorting: false,
             cell: ({ row }) => {
                 const course = row.original;
-                const isOpen = openActionRowId === course.courseId;
+                const isOpen = openActionRowId === course.id;
                 return (
                     <ActionDropdown<Course>
                         data={course}
                         isOpen={isOpen}
                         onOpenChange={(shouldOpen: boolean) => {
                             if (shouldOpen) {
-                                setOpenActionRowId(course.courseId);
+                                setOpenActionRowId(course.id);
                             } else {
                                 setOpenActionRowId(null);
                             }
@@ -72,18 +72,20 @@ const CourseDetails = () => {
     ];
 
     return (
-        <DataTable<Course>
-            columns={courseColumns} // ← your existing columns
-            data={data?.courses ?? []}
-            pageCount={data?.meta?.totalPages ?? 0}
-            pageIndex={pageIndex}
-            pageSize={pageSize}
-            setPageIndex={setPageIndex}
-            setPageSize={setPageSize}
-            isLoading={isLoading}
-            sorting={sorting}
-            setSorting={setSorting}
-        />
+        <div className=" py-6 shadow-sm my-2 mt-8 bg-white rounded-md w-full">
+            <DataTable<Course>
+                columns={courseColumns} // ← your existing columns
+                data={data?.courses ?? []}
+                pageCount={data?.meta?.totalPages ?? 0}
+                pageIndex={pageIndex}
+                pageSize={pageSize}
+                setPageIndex={setPageIndex}
+                setPageSize={setPageSize}
+                isLoading={isLoading}
+                sorting={sorting}
+                setSorting={setSorting}
+            />
+        </div>
     );
 }
 
