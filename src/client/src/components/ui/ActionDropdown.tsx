@@ -1,13 +1,12 @@
 import { Pencil, Trash2 } from "lucide-react";
-import type { Course } from "../../modules/course/pages/CourseIndex";
 
-interface ActionDropdownProps {
-    course: Course;
+interface ActionDropdownProps<TData extends { id: string }> {
+    data: TData;
     isOpen: boolean;
     onOpenChange: (open: boolean) => void;
 }
 
-export default function ActionDropdown({ course, isOpen, onOpenChange }: ActionDropdownProps) {
+export default function ActionDropdown<TData extends { id: string; },>({ data, isOpen, onOpenChange }: ActionDropdownProps<TData>) {
     return (
         <div className="relative inline-block text-left">
             <button
@@ -30,7 +29,7 @@ export default function ActionDropdown({ course, isOpen, onOpenChange }: ActionD
                             <button
                                 className="flex items-center gap-2 w-full px-2 py-2 text-left text-xs text-gray-700 hover:bg-gray-100"
                                 onClick={() => {
-                                    console.log("Edit course", course.courseId);
+                                    console.log("Edit course", data.id);
                                     onOpenChange(false);
                                 }}
                             >
@@ -41,7 +40,7 @@ export default function ActionDropdown({ course, isOpen, onOpenChange }: ActionD
                             <button
                                 className="flex gap-2 items-center w-full px-2 py-2 text-left text-xs text-red-700 hover:bg-gray-100"
                                 onClick={() => {
-                                    console.log("Delete course", course.courseId);
+                                    console.log("Delete course", data);
                                     onOpenChange(false);
                                 }}
                             >

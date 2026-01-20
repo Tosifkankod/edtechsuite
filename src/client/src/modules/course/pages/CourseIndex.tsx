@@ -14,6 +14,7 @@ import LimitDropdown from "../../../components/ui/LimitDropdown";
 import ActionDropdown from "../../../components/ui/ActionDropdown";
 
 export interface Course {
+    id: string,
     courseId: number;
     courseName: string;
     courseFee: number;
@@ -86,6 +87,7 @@ const CourseTable = () => {
         {
             accessorKey: "courseName",
             header: "Course Name",
+            size: 400
         },
         {
             accessorKey: "courseFee",
@@ -109,8 +111,8 @@ const CourseTable = () => {
                 const course = row.original;
                 const isOpen = openActionRowId === course.courseId;
                 return (
-                    <ActionDropdown
-                        course={course}
+                    <ActionDropdown<Course>
+                        data={course}
                         isOpen={isOpen}
                         onOpenChange={(shouldOpen: boolean) => {
                             if (shouldOpen) {
@@ -164,7 +166,7 @@ const CourseTable = () => {
                 <span className="text-xs ml-2 text-gray-400">entries per page</span>
             </div>
 
-            <table className="w-full rounded-md">
+            <table className="w-full rounded-md table-fixed">
                 <thead className="text-xs text-gray-400 font-normal">
                     {table.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
@@ -172,7 +174,8 @@ const CourseTable = () => {
                                 <th
                                     key={header.id}
                                     onClick={header.column.getToggleSortingHandler()}
-                                    className="p-3 px-4 text-left cursor-pointer select-none"
+                                    className="p-3 px-4 text-left truncate cursor-pointer select-none"
+                                    style={{ width: header.getSize() }}
                                 >
                                     <div className="flex items-center justify-between gap-2">
                                         {/* Header title */}
@@ -216,7 +219,11 @@ const CourseTable = () => {
                             className="text-sm border-y border-gray-100 text-gray-500"
                         >
                             {row.getVisibleCells().map((cell) => (
-                                <td key={cell.id} className="p-3 px-4">
+                                <td
+                                    key={cell.id}
+                                    className="p-3 px-4 truncate"
+                                    style={{ width: cell.column.getSize() }}
+                                >
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>
                             ))}
