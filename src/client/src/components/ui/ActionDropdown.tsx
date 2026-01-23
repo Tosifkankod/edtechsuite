@@ -1,4 +1,7 @@
 import { Pencil, Trash2 } from "lucide-react";
+import { useDeleteCourses } from "../../modules/course/hooks/queryHook";
+import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface ActionDropdownProps<TData extends { id: number }> {
     data: TData;
@@ -7,21 +10,31 @@ interface ActionDropdownProps<TData extends { id: number }> {
     api: string;
 }
 
+type DeleteHandler = (id: number) => void;
+
 export default function ActionDropdown<TData extends { id: number; },>({ data, isOpen, onOpenChange, api }: ActionDropdownProps<TData>) {
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate();
+
+    const deleteHandlers: Record<string, DeleteHandler> = {
+        '/course': useDeleteCourses().mutate,
+    }
+
     const handleOnEdit = (id: number) => {
-        switch (api) {
-            case '/course':
-                break;
-            default: ''
-        }
-        onOpenChange(false);
+        navigate(`${api}/edit/${id}`)
     }
 
     const handleOnDelete = (id: number) => {
+        const delteFn = deleteHandlers[api];
+        delteFn(id);
         onOpenChange(false);
     }
 
+    useEffect(() => {
+        if (!isOpen) return;
 
+
+    }, [])
 
     return (
         <div className="relative inline-block text-left">

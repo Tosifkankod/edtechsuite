@@ -12,7 +12,7 @@ export const courseRoutes = [
         element: <CourseDetails />
     },
     {
-        path: ':courseId/edit',
+        path: 'edit/:courseId',
         element: <CourseEdit />
     },
     {
