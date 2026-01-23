@@ -8,5 +8,6 @@ const router = Router();
 
 router.route('/').get(validateResource(indexSchema), courseController.index)
 router.route('/').post(validateResource(createCourseSchema), courseController.createCourse)
+router.route('/:id').delete(courseController.deleteCourse)
 
 export default router;

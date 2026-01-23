@@ -20,12 +20,7 @@ export default {
         try {
             const body = req.body;
 
-            const slugExist = await service.findOne({
-                where: {
-                    slug: body.slug
-                }
-            })
-            console.log(slugExist)
+            const slugExist = await service.findOne(body.id)
 
             if (slugExist) {
                 return httpError(next, new Error('slug already exist'), req, 401)
@@ -38,9 +33,24 @@ export default {
                 throw new Error(responseMessage.UNABLE_TO_PROCESS)
             }
 
-            httpResponse(req, res, 200, responseMessage.SUCCESS, savedModel);
+            return httpResponse(req, res, 200, responseMessage.SUCCESS, savedModel);
         } catch (error) {
-            httpError(next, error, req, 500);
+            return httpError(next, error, req, 500);
         }
     },
+    deleteCourse: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id = req.params.id ? Number(req.params.id) : -1;
+
+            const isDeleted = await service.delete(id);
+
+            if (isDeleted) {
+                return httpResponse(req, res, 200, responseMessage.SUCCESS, isDeleted);
+            }
+
+            throw new Error(responseMessage.UNABLE_TO_PROCESS)
+        } catch (error) {
+            return httpError(next, error, req, 500);
+        }
+    }
 } 

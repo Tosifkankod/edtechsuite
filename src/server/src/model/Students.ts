@@ -38,6 +38,9 @@ export class Student {
     })
     employmentStatus: EmploymentStatusEnum;
 
+    @Column("smallint", { name: "is_deleted", default: () => "0" })
+    isDeleted: number;
+
     @CreateDateColumn({ name: "created_at" })
     createdAt: Date;
 
