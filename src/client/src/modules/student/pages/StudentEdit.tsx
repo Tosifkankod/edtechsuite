@@ -69,7 +69,7 @@ const StudentEdit = () => {
             </div>
             <form onSubmit={handleOnSubmit} >
                 <div className="px-4 flex justify-end">
-                    <button className="bg-dark-angled gap-2 rounded-md py-2 flex items-center justify-center text-white px-3 text-sm ">
+                    <button className="bg-dark-angled gap-2 rounded-md hover:shadow-xl hover:shadow-gray-400 duration-300 cursor-pointer py-2 flex items-center justify-center text-white px-3 text-sm ">
                         <Save className="" size={17} />
                         Save Changes
                     </button>

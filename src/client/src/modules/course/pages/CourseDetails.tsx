@@ -65,6 +65,7 @@ const CourseDetails = () => {
                                 setOpenActionRowId(null);
                             }
                         }}
+                        api='/course'
                     />
                 );
             }

@@ -63,7 +63,7 @@ const CourseEdit = () => {
 
             <form onSubmit={handleOnSubmit} >
                 <div className="px-4 flex justify-end">
-                    <button disabled={saveMutation.isPending} className="bg-dark-angled gap-2 rounded-md py-2 flex items-center justify-center text-white px-3 text-sm ">
+                    <button disabled={saveMutation.isPending} className="bg-dark-angled hover:shadow-xl hover:shadow-gray-400 duration-300 cursor-pointer gap-2 rounded-md py-2 flex items-center justify-center text-white px-3 text-sm ">
                         <Save className="" size={17} />
                         {saveMutation.isPending ? "Saving..." : "Save Changes"}
                     </button>

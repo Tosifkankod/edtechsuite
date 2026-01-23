@@ -4,9 +4,25 @@ interface ActionDropdownProps<TData extends { id: number }> {
     data: TData;
     isOpen: boolean;
     onOpenChange: (open: boolean) => void;
+    api: string;
 }
 
-export default function ActionDropdown<TData extends { id: number; },>({ data, isOpen, onOpenChange }: ActionDropdownProps<TData>) {
+export default function ActionDropdown<TData extends { id: number; },>({ data, isOpen, onOpenChange, api }: ActionDropdownProps<TData>) {
+    const handleOnEdit = (id: number) => {
+        switch (api) {
+            case '/course':
+                break;
+            default: ''
+        }
+        onOpenChange(false);
+    }
+
+    const handleOnDelete = (id: number) => {
+        onOpenChange(false);
+    }
+
+
+
     return (
         <div className="relative inline-block text-left">
             <button
@@ -28,10 +44,7 @@ export default function ActionDropdown<TData extends { id: number; },>({ data, i
                         <div className="py-1">
                             <button
                                 className="flex items-center gap-2 w-full px-2 py-2 text-left text-xs text-gray-700 hover:bg-gray-100"
-                                onClick={() => {
-                                    console.log("Edit course", data.id);
-                                    onOpenChange(false);
-                                }}
+                                onClick={() => handleOnEdit(data.id)}
                             >
                                 <Pencil size={14} />
                                 Edit
@@ -39,10 +52,7 @@ export default function ActionDropdown<TData extends { id: number; },>({ data, i
 
                             <button
                                 className="flex gap-2 items-center w-full px-2 py-2 text-left text-xs text-red-700 hover:bg-gray-100"
-                                onClick={() => {
-                                    console.log("Delete course", data);
-                                    onOpenChange(false);
-                                }}
+                                onClick={() => handleOnDelete(data.id)}
                             >
                                 <Trash2 size={14} />
                                 Delete
