@@ -1,14 +1,15 @@
-import { useState, type ChangeEvent, type FormEvent } from "react"
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react"
 import Input from "../../../components/ui/Input"
 import { Save } from "lucide-react";
 import { createSlug } from "../../../utils/generateSlug";
-import { useSaveCourse } from "../hooks/queryHook";
+import { useSaveCourse, useSingleCourse } from "../hooks/queryHook";
 import { useToast } from "../../../components/ui/Alert";
 import { AxiosError } from "axios";
 import { useParams } from "react-router-dom";
 
 const CourseEdit = () => {
     const { courseId } = useParams();
+    const isEdit = Boolean(courseId);
     const [courseData, setCourseData] = useState({
         courseName: "",
         slug: "",
@@ -16,10 +17,23 @@ const CourseEdit = () => {
         courseFee: '',
         courseDescription: "",
     });
+    const { data, isLoading } = useSingleCourse(String(courseId));
     const [formErors, setFormErrors] = useState<Record<string, string>>({});
     const saveMutation = useSaveCourse();
     const { toast } = useToast();
 
+    useEffect(() => {
+        if (data && isEdit) {
+            console.log(data)
+            setCourseData({
+                courseName: data.courseName ?? '',
+                slug: data.slug ?? '',
+                courseDuration: data.courseDuration ?? '',
+                courseFee: data.courseFee ?? '',
+                courseDescription: data.courseDescription ?? ''
+            })
+        }
+    }, [data, isEdit])
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setCourseData((prev) => {
@@ -54,6 +68,10 @@ const CourseEdit = () => {
                 }
             }
         }
+    }
+
+    if (isEdit && isLoading) {
+        return <p>Loading course data...</p>;
     }
 
     return (

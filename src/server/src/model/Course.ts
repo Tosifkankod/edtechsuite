@@ -17,7 +17,7 @@ export class Course {
     @Column("character varying", { name: "course_name" })
     courseName: string;
 
-    @Column("character varying", { name: "slug" })
+    @Column("character varying", { name: "slug", unique: true })
     slug: string;
 
     @Column("integer", { name: "course_fee" })

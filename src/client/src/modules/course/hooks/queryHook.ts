@@ -36,11 +36,14 @@ export const useCourses = (params: queryParams) => {
     });
 }
 
-export const useSingleCourse = (params: string) => {
+export const useSingleCourse = (id: string) => {
     return useQuery({
-        queryKey: [QUERY_KEY]
+        queryKey: [QUERY_KEY],
+        queryFn: async () => {
+            const res = await api.get(`/course/${id}`);
+            return res.data.data;
+        }
     })
-
 }
 
 export const useDeleteCourses = () => {

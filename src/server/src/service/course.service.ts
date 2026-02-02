@@ -79,6 +79,42 @@ export class CourseService {
         throw new Error(responseMessage.UNABLE_TO_PROCESS)
     }
 
+    // UPDATE
+    update(model: Course, bodyParams: Partial<Course>): Course {
+        if (bodyParams.courseName !== undefined) {
+            model.courseName = bodyParams.courseName;
+        }
+
+        if (bodyParams.slug !== undefined) {
+            model.slug = bodyParams.slug;
+        }
+
+        if (bodyParams.courseDuration !== undefined) {
+            model.courseDuration = bodyParams.courseDuration;
+        }
+
+        if (bodyParams.courseFee !== undefined) {
+            model.courseFee = bodyParams.courseFee;
+        }
+
+        if (bodyParams.courseDescription !== undefined) {
+            model.courseDescription = bodyParams.courseDescription;
+        }
+
+        return model;
+    }
+
+    async isSlugTaken(slug: string, excludeId?: number): Promise<boolean> {
+        const qb = repo.createQueryBuilder("course")
+            .where("course.slug = :slug", { slug })
+            .andWhere("course.isDeleted = 0");
+
+        if (excludeId) qb.andWhere("course.id != :excludeId", { excludeId });
+
+        const existing = await qb.getOne();
+        return !!existing;
+    }
+
     async save(model: Course): Promise<Course> {
         return repo.save(model);
     }
