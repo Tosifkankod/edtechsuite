@@ -55,7 +55,8 @@ export class CourseService {
     async findOne(id: number) {
         return repo.findOne({
             where: {
-                id: id
+                id: id,
+                isDeleted: 0
             }
         });
     }

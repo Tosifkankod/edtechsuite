@@ -16,6 +16,22 @@ export default {
             httpError(next, error, req, 500);
         }
     },
+    singleCourse: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id = req.params.id ? Number(req.params.id) : -1;
+
+            const result = await service.findOne(id);
+
+            if (!result) {
+                return httpResponse(req, res, 404, responseMessage.NOT_FOUND('course not found'));
+            }
+
+            return httpResponse(req, res, 200, responseMessage.SUCCESS, result);
+
+        } catch (error) {
+            httpError(next, error, req, 500);
+        }
+    },
     createCourse: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const body = req.body;

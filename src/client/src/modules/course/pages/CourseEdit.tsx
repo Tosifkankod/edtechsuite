@@ -5,8 +5,10 @@ import { createSlug } from "../../../utils/generateSlug";
 import { useSaveCourse } from "../hooks/queryHook";
 import { useToast } from "../../../components/ui/Alert";
 import { AxiosError } from "axios";
+import { useParams } from "react-router-dom";
 
 const CourseEdit = () => {
+    const { courseId } = useParams();
     const [courseData, setCourseData] = useState({
         courseName: "",
         slug: "",

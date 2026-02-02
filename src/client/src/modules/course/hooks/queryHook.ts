@@ -36,6 +36,13 @@ export const useCourses = (params: queryParams) => {
     });
 }
 
+export const useSingleCourse = (params: string) => {
+    return useQuery({
+        queryKey: [QUERY_KEY]
+    })
+
+}
+
 export const useDeleteCourses = () => {
     const queryClient = useQueryClient();
     const { toast } = useToast();
