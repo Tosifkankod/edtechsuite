@@ -5,9 +5,10 @@ import { createSlug } from "../../../utils/generateSlug";
 import { useSaveCourse, useSingleCourse, useUpdateCourse } from "../hooks/queryHook";
 import { useToast } from "../../../components/ui/Alert";
 import { AxiosError } from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CourseEdit = () => {
+    const navigate = useNavigate();
     const { courseId } = useParams();
     const isEdit = Boolean(courseId);
     const [courseData, setCourseData] = useState({
@@ -79,6 +80,7 @@ const CourseEdit = () => {
         if (isEdit) {
             try {
                 await updateMutation.mutateAsync(payload);
+                navigate('/course')
             } catch (error) {
                 if (error instanceof AxiosError) {
                     toast(error.response?.data.message, 'error');
