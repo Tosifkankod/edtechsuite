@@ -1,5 +1,5 @@
 import { Pencil, Trash2 } from "lucide-react";
-import { useDeleteCourses } from "../../modules/course/hooks/queryHook";
+import { useDeleteCourse } from "../../modules/course/hooks/queryHook";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +17,7 @@ export default function ActionDropdown<TData extends { id: number; },>({ data, i
     const navigate = useNavigate();
 
     const deleteHandlers: Record<string, DeleteHandler> = {
-        '/course': useDeleteCourses().mutate,
+        '/course': useDeleteCourse().mutate,
     }
 
     const handleOnEdit = (id: number) => {

@@ -37,7 +37,7 @@ export default {
         try {
             const body = req.body;
 
-            const slugExist = await service.findOne(body.id)
+            const slugExist = await service.isSlugTaken(body.slug)
 
             if (slugExist) {
                 return httpError(next, new Error('slug already exist'), req, 401)

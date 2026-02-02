@@ -46,7 +46,7 @@ export const useSingleCourse = (id: string) => {
     })
 }
 
-export const useDeleteCourses = () => {
+export const useDeleteCourse = () => {
     const queryClient = useQueryClient();
     const { toast } = useToast();
 
@@ -60,6 +60,21 @@ export const useDeleteCourses = () => {
         },
         onError: () => {
             toast("Could not delete course", "error");
+        }
+    })
+}
+
+export const useUpdateCourse = (id: String) => {
+    const queryClient = useQueryClient();
+    const { toast } = useToast();
+
+    return useMutation({
+        mutationFn: (courseData: any) =>
+            api.patch(`/course/${id}`, courseData),
+
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY] })
+            toast("course saved", 'success');
         }
     })
 }

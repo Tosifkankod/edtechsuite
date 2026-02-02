@@ -2,7 +2,7 @@ import { useEffect, useState, type ChangeEvent, type FormEvent } from "react"
 import Input from "../../../components/ui/Input"
 import { Save } from "lucide-react";
 import { createSlug } from "../../../utils/generateSlug";
-import { useSaveCourse, useSingleCourse } from "../hooks/queryHook";
+import { useSaveCourse, useSingleCourse, useUpdateCourse } from "../hooks/queryHook";
 import { useToast } from "../../../components/ui/Alert";
 import { AxiosError } from "axios";
 import { useParams } from "react-router-dom";
@@ -17,23 +17,39 @@ const CourseEdit = () => {
         courseFee: '',
         courseDescription: "",
     });
+    const [originalData, setOriginalData] = useState<typeof courseData | null>(null);
     const { data, isLoading } = useSingleCourse(String(courseId));
     const [formErors, setFormErrors] = useState<Record<string, string>>({});
     const saveMutation = useSaveCourse();
+    const updateMutation = useUpdateCourse(String(courseId));
     const { toast } = useToast();
 
     useEffect(() => {
         if (data && isEdit) {
             console.log(data)
-            setCourseData({
+            const formattedData = {
                 courseName: data.courseName ?? '',
                 slug: data.slug ?? '',
                 courseDuration: data.courseDuration ?? '',
                 courseFee: data.courseFee ?? '',
                 courseDescription: data.courseDescription ?? ''
-            })
+            }
+            setOriginalData(formattedData);
+            setCourseData(formattedData);
         }
     }, [data, isEdit])
+
+    const getUpdatedFields = () => {
+        if (!originalData) return courseData;
+        const updated: Partial<typeof courseData> = {};
+        Object.keys(courseData).forEach((key) => {
+            const k = key as keyof typeof courseData;
+            if (courseData[k] !== originalData[k]) {
+                updated[k] = courseData[k];
+            }
+        })
+        return updated;
+    }
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setCourseData((prev) => {
@@ -50,21 +66,40 @@ const CourseEdit = () => {
 
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        const updatedFields = isEdit ? getUpdatedFields() : courseData;
         const payload = {
-            ...courseData,
+            ...updatedFields,
             courseDuration: Number(courseData.courseDuration),
             courseFee: Number(courseData.courseFee),
         };
+
+
         setFormErrors({});
-        try {
-            await saveMutation.mutateAsync(payload)
-        } catch (error) {
-            if (error instanceof AxiosError) {
-                toast(error.response?.data.message, 'error');
-                const errors = error.response?.data.error;
-                console.log(errors)
-                if (errors) {
-                    setFormErrors(errors);
+        if (isEdit) {
+            try {
+                await updateMutation.mutateAsync(payload);
+            } catch (error) {
+                if (error instanceof AxiosError) {
+                    toast(error.response?.data.message, 'error');
+                    const errors = error.response?.data.error;
+                    console.log(errors)
+                    if (errors) {
+                        setFormErrors(errors);
+                    }
+                }
+            }
+        } else {
+            try {
+                await saveMutation.mutateAsync(payload)
+            } catch (error) {
+                if (error instanceof AxiosError) {
+                    toast(error.response?.data.message, 'error');
+                    const errors = error.response?.data.error;
+                    console.log(errors)
+                    if (errors) {
+                        setFormErrors(errors);
+                    }
                 }
             }
         }
