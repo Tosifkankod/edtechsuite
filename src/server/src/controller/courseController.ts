@@ -19,7 +19,8 @@ export default {
     },
     singleCourse: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const id = req.params.id ? Number(req.params.id) : -1;
+            const id = Number(req.params.id);
+            if (isNaN(id)) return httpResponse(req, res, 400, responseMessage.NOT_FOUND('id not found'));
 
             const result = await service.findOne(id);
 
@@ -57,7 +58,8 @@ export default {
     },
     deleteCourse: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const id = req.params.id ? Number(req.params.id) : -1;
+            const id = Number(req.params.id);
+            if (isNaN(id)) return httpResponse(req, res, 400, responseMessage.NOT_FOUND('id not found'));
 
             const isDeleted = await service.delete(id);
 
