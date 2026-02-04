@@ -78,7 +78,9 @@ export default {
             }
 
             const body = req.body as Partial<Course>;
-            
+            console.log(course instanceof Course)
+            console.log(course.hasOwnProperty('id'));
+
             const updatedCourse = service.update(course, body);
             console.log(updatedCourse, '😀😀')
             const savedCourse = await service.save(updatedCourse);;

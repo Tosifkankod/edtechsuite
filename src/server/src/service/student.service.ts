@@ -30,6 +30,7 @@ export class StudentService {
         };
 
     }
+
     create(data: Student) {
         let model: Student = new Student();
         model.studentName = data.studentName;
@@ -40,12 +41,15 @@ export class StudentService {
         model.employmentStatus = data.employmentStatus;
         return model;
     }
+
     async findOne(student: { where: any }) {
         return repo.findOne(student);
     }
+
     async save(model: Student): Promise<Student> {
         return repo.save(model);
     }
+
     async delete(id: number) {
         const student = await repo.findOne({
             where: {
@@ -60,6 +64,17 @@ export class StudentService {
             return deleted;
         }
         throw new Error(responseMessage.NOT_FOUND('student'))
+    }
+
+    update(model: Student, bodyParams: Partial<Student>): Student {
+        if (bodyParams.gender !== undefined) model.gender = bodyParams.gender;
+        if (bodyParams.studentName !== undefined) model.studentName = bodyParams.studentName;
+        if (bodyParams.address !== undefined) model.address = bodyParams.address;
+        if (bodyParams.email !== undefined) model.email = bodyParams.email;
+        if (bodyParams.employmentStatus !== undefined) model.employmentStatus = bodyParams.employmentStatus;
+        if (bodyParams.phone !== undefined) model.phone = bodyParams.phone;
+
+        return model;
     }
 
 }

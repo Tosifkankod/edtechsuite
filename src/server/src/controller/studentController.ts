@@ -47,7 +47,8 @@ export default {
 
             const studentExist = await service.findOne({
                 where: {
-                    phone: body.phone
+                    phone: body.phone,
+                    isDeleted: 0
                 }
             })
 
@@ -85,7 +86,7 @@ export default {
     },
     updateStudent: async (req: Request, res: Response, next: NextFunction) => {
         try {
-            const id = Number(req.params);
+            const id = Number(req.params.id);
             if (isNaN(id)) return httpResponse(req, res, 400, responseMessage.NOT_FOUND('id not found'));
 
             const student = await service.findOne({
@@ -100,8 +101,14 @@ export default {
             }
 
             const body = req.body as Partial<Student>
+            const newModel = service.update(student, body);
+            const savedModel = await service.save(newModel);
 
-            console.log(body)
+            if (!savedModel) {
+                return httpResponse(req, res, 404, responseMessage.UNABLE_TO_PROCESS);
+            }
+
+            return httpResponse(req, res, 200, responseMessage.SUCCESS, savedModel);
 
         } catch (error) {
             httpError(next, error, req, 500);

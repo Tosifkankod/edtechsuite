@@ -80,15 +80,15 @@ export class CourseService {
 
     // UPDATE
     update(model: Course, bodyParams: Partial<Course>): Course {
-        Object.entries(bodyParams).forEach(([key, value]) => {
-            if (value !== undefined) {
-                (model as any)[key] = value;
-            }
-        });
+        if (bodyParams.courseDescription !== undefined) model.courseDescription = bodyParams.courseDescription;
+        if (bodyParams.courseDuration !== undefined) model.courseDuration = bodyParams.courseDuration;
+        if (bodyParams.courseFee !== undefined) model.courseFee = bodyParams.courseFee;
+        if (bodyParams.courseName !== undefined) model.courseName = bodyParams.courseName;
         return model;
     }
 
     async save(model: Course): Promise<Course> {
+        console.log(model.id)
         return repo.save(model);
     }
 }
