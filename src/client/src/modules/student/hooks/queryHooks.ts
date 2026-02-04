@@ -26,7 +26,6 @@ export const useSaveStudent = () => {
     })
 }
 
-
 export const useStudents = (params: queryParams) => {
     return useQuery({
         queryKey: [QUERY_KEY, params],
@@ -39,4 +38,21 @@ export const useStudents = (params: queryParams) => {
         placeholderData: (previousData) => previousData
     })
 
+}
+
+export const useDeleteStudent = () => {
+    const queryClient = useQueryClient();
+    const { toast } = useToast();
+
+    return useMutation({
+        mutationFn: (studentId: number) => api.delete(`/student/${studentId}`),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY] })
+            toast('student deleted successfully', 'success')
+        },
+        onError: (error) => {
+            console.log(error)
+            toast("Could not delete course", "error");
+        }
+    })
 }
