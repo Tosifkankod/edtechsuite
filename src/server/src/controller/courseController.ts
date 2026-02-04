@@ -38,12 +38,6 @@ export default {
         try {
             const body = req.body;
 
-            const slugExist = await service.isSlugTaken(body.slug)
-
-            if (slugExist) {
-                return httpError(next, new Error('slug already exist'), req, 401)
-            }
-
             const model = service.create(body)
             const savedModel = await service.save(model);
 
@@ -84,13 +78,9 @@ export default {
             }
 
             const body = req.body as Partial<Course>;
-            if (body.slug && body.slug !== course.slug) {
-                const slugTaken = await service.isSlugTaken(body.slug, course.id);
-                if (slugTaken) return httpResponse(req, res, 400, responseMessage.VALIDATION_ERROR);
-            }
-
+            
             const updatedCourse = service.update(course, body);
-
+            console.log(updatedCourse, '😀😀')
             const savedCourse = await service.save(updatedCourse);;
 
             return httpResponse(req, res, 200, responseMessage.SUCCESS, savedCourse);
@@ -98,4 +88,4 @@ export default {
             return httpError(next, error, req, 500);
         }
     }
-} 
+}   

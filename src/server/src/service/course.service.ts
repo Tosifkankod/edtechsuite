@@ -14,7 +14,6 @@ export class CourseService {
         model.courseDescription = data.courseDescription;
         model.courseDuration = data.courseDuration;
         model.courseFee = data.courseFee;
-        model.slug = data.slug;
         return model;
     }
 
@@ -81,26 +80,11 @@ export class CourseService {
 
     // UPDATE
     update(model: Course, bodyParams: Partial<Course>): Course {
-        if (bodyParams.courseName !== undefined) {
-            model.courseName = bodyParams.courseName;
-        }
-
-        if (bodyParams.slug !== undefined) {
-            model.slug = bodyParams.slug;
-        }
-
-        if (bodyParams.courseDuration !== undefined) {
-            model.courseDuration = bodyParams.courseDuration;
-        }
-
-        if (bodyParams.courseFee !== undefined) {
-            model.courseFee = bodyParams.courseFee;
-        }
-
-        if (bodyParams.courseDescription !== undefined) {
-            model.courseDescription = bodyParams.courseDescription;
-        }
-
+        Object.entries(bodyParams).forEach(([key, value]) => {
+            if (value !== undefined) {
+                (model as any)[key] = value;
+            }
+        });
         return model;
     }
 

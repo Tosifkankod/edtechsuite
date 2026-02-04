@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 
 @Entity("course", { schema: "public" })
-@Index("course_slug_unique", ["slug"], { unique: true })
+@Index("courses_id_unique", ["id"], { unique: true })
 export class Course {
 
     @PrimaryGeneratedColumn({ type: "integer", name: "id" })
@@ -16,9 +16,6 @@ export class Course {
 
     @Column("character varying", { name: "course_name" })
     courseName: string;
-
-    @Column("character varying", { name: "slug", unique: true })
-    slug: string;
 
     @Column("integer", { name: "course_fee" })
     courseFee: number;

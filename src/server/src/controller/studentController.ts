@@ -4,6 +4,7 @@ import { StudentService } from "../service/student.service";
 import responseMessage from "../constant/responseMessage";
 import httpResponse from "../utils/httpResponse";
 import { indexSchema } from "../schema/commonSchema";
+import { Student } from "../model/Students";
 
 
 const service = new StudentService();
@@ -78,6 +79,30 @@ export default {
             }
 
             return httpResponse(req, res, 200, responseMessage.SUCCESS, isDeleted);
+        } catch (error) {
+            httpError(next, error, req, 500);
+        }
+    },
+    updateCourse: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id = Number(req.params);
+            if (isNaN(id)) return httpResponse(req, res, 400, responseMessage.NOT_FOUND('id not found'));
+
+            const student = await service.findOne({
+                where: {
+                    id: id,
+                    isDeleted: 0
+                }
+            });
+
+            if (!student) {
+                return httpResponse(req, res, 404, responseMessage.NOT_FOUND('student not found'));
+            }
+
+            const body = req.body as Partial<Student>
+
+            console.log(body)
+
         } catch (error) {
             httpError(next, error, req, 500);
         }
