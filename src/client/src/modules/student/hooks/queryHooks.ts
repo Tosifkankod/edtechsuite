@@ -66,3 +66,19 @@ export const useDeleteStudent = () => {
         }
     })
 }
+
+
+export const useUpdateStudent = (id: String) => {
+    const queryClient = useQueryClient();
+    const { toast } = useToast();
+
+    return useMutation({
+        mutationFn: (studentData: any) =>
+            api.patch(`/student/${id}`, studentData),
+
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: [QUERY_KEY] })
+            toast("course saved", 'success');
+        }
+    })
+}

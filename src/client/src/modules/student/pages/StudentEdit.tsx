@@ -2,7 +2,7 @@ import { Save } from 'lucide-react'
 import Input from '../../../components/ui/Input'
 import SelectInput from '../../../components/ui/SelectInput'
 import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
-import { useGetSingleStudent, useSaveStudent } from '../hooks/queryHooks';
+import { useGetSingleStudent, useSaveStudent, useUpdateStudent } from '../hooks/queryHooks';
 import { AxiosError } from 'axios';
 import { useToast } from '../../../components/ui/Alert';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -11,6 +11,7 @@ import { useSingleCourse } from '../../course/hooks/queryHook';
 const StudentEdit = () => {
     const navigate = useNavigate();
     const { studentId } = useParams();
+    const [originalData, setOriginalData] = useState<typeof studentData | null>(null);
     const [studentData, setStudentData] = useState({
         studentName: "",
         email: "",
@@ -23,6 +24,7 @@ const StudentEdit = () => {
     const { data, isLoading } = useGetSingleStudent(String(studentId));
     const [formErors, setFormErrors] = useState<Record<string, string>>({});
     const saveMutation = useSaveStudent();
+    const updateMutation = useUpdateStudent(String(studentId));
     const { toast } = useToast();
 
     useEffect(() => {
@@ -35,9 +37,22 @@ const StudentEdit = () => {
                 gender: data.gender ?? '',
                 employmentStatus: data.employmentStatus ?? ''
             }
+            setOriginalData(formattedData);
             setStudentData(formattedData)
         }
     }, [isEdit, data])
+
+    const getUpdatedFields = () => {
+        if (!originalData) return studentData;
+        const updated: Partial<typeof studentData> = {};
+        Object.keys(studentData).forEach((key) => {
+            const k = key as keyof typeof studentData;
+            if (studentData[k] !== originalData[k]) {
+                updated[k] = studentData[k];
+            }
+        })
+        return updated;
+    }
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
         setStudentData((prev) => {
@@ -57,16 +72,41 @@ const StudentEdit = () => {
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setFormErrors({});
-        try {
-            await saveMutation.mutateAsync(studentData)
-        } catch (error) {
-            console.log("error")
-            if (error instanceof AxiosError) {
-                toast(error.response?.data.message, 'error');
-                const errors = error.response?.data.error;
-                console.log(errors)
-                if (errors) {
-                    setFormErrors(errors);
+
+        const updatedFields = isEdit ? getUpdatedFields() : {};
+        if (Object.keys(updatedFields).length == 0 && updatedFields.constructor === Object && isEdit) {
+            toast('Nothing Changed', 'info')
+            return;
+        }
+
+        setFormErrors({});
+        if (isEdit) {
+            try {
+                await updateMutation.mutateAsync(studentData)
+                navigate('/student')
+            } catch (error) {
+                console.log("error")
+                if (error instanceof AxiosError) {
+                    toast(error.response?.data.message, 'error');
+                    const errors = error.response?.data.error;
+                    console.log(errors)
+                    if (errors) {
+                        setFormErrors(errors);
+                    }
+                }
+            }
+        } else {
+            try {
+                await saveMutation.mutateAsync(studentData)
+            } catch (error) {
+                console.log("error")
+                if (error instanceof AxiosError) {
+                    toast(error.response?.data.message, 'error');
+                    const errors = error.response?.data.error;
+                    console.log(errors)
+                    if (errors) {
+                        setFormErrors(errors);
+                    }
                 }
             }
         }

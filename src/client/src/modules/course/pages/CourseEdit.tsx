@@ -63,16 +63,20 @@ const CourseEdit = () => {
     const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const updatedFields = isEdit ? getUpdatedFields() : courseData;
-        const payload = {
-            ...updatedFields,
-            courseDuration: Number(courseData.courseDuration),
-            courseFee: Number(courseData.courseFee),
-        };
+        const updatedFields = isEdit ? getUpdatedFields() : {};
 
+        if (Object.keys(updatedFields).length == 0 && updatedFields.constructor === Object && isEdit) {
+            toast('Nothing Changed', 'info')
+            return;
+        }
 
         setFormErrors({});
         if (isEdit) {
+            const payload = {
+                ...updatedFields,
+                courseDuration: Number(courseData.courseDuration),
+                courseFee: Number(courseData.courseFee),
+            };
             try {
                 await updateMutation.mutateAsync(payload);
                 navigate('/course')
@@ -87,6 +91,11 @@ const CourseEdit = () => {
                 }
             }
         } else {
+            const payload = {
+                ...courseData,
+                courseDuration: Number(courseData.courseDuration),
+                courseFee: Number(courseData.courseFee),
+            };
             try {
                 await saveMutation.mutateAsync(payload)
             } catch (error) {
