@@ -88,17 +88,6 @@ export class CourseService {
         return model;
     }
 
-    async isSlugTaken(slug: string, excludeId?: number): Promise<boolean> {
-        const qb = repo.createQueryBuilder("course")
-            .where("course.slug = :slug", { slug })
-            .andWhere("course.isDeleted = 0");
-
-        if (excludeId) qb.andWhere("course.id != :excludeId", { excludeId });
-
-        const existing = await qb.getOne();
-        return !!existing;
-    }
-
     async save(model: Course): Promise<Course> {
         return repo.save(model);
     }
