@@ -82,4 +82,4 @@ export default {
             httpError(next, error, req, 500);
         }
     }
-} 
+}   

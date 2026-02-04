@@ -15,6 +15,7 @@ export class StudentService {
 
         // sort by
         qb.orderBy(`student.${sortBy}`, order)
+        qb.where('student.isDeleted = 0')
         qb.skip((page - 1) * limit).take(limit)
 
         const [data, total] = await qb.getManyAndCount();
@@ -52,7 +53,7 @@ export class StudentService {
                 isDeleted: 0
             }
         })
-
+        console.log(student)
         if (student) {
             student.isDeleted = 1;
             const deleted = await repo.save(student);
