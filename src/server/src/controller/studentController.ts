@@ -20,10 +20,10 @@ export default {
             httpError(next, error, req, 500);
         }
     },
-    singleCourse: async (req: Request, res: Response, next: NextFunction) => {
+    singleStudent: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = Number(req.params.id);
-            if (isNaN(id)) return httpResponse(req, res, 400, responseMessage.NOT_FOUND('id not found'));
+            if (isNaN(id)) return httpResponse(req, res, 400, responseMessage.NOT_FOUND('id'));
 
             const student = await service.findOne({
                 where: {
@@ -33,7 +33,7 @@ export default {
             });
 
             if (!student) {
-                return httpResponse(req, res, 404, responseMessage.NOT_FOUND('student not found'));
+                return httpResponse(req, res, 404, responseMessage.NOT_FOUND('student'));
             }
 
             return httpResponse(req, res, 200, responseMessage.SUCCESS, student);
@@ -41,7 +41,7 @@ export default {
             httpError(next, error, req, 500);
         }
     },
-    createCourse: async (req: Request, res: Response, next: NextFunction) => {
+    createStudent: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const body = req.body;
 
@@ -67,7 +67,7 @@ export default {
             httpError(next, error, req, 500);
         }
     },
-    deleteCourse: async (req: Request, res: Response, next: NextFunction) => {
+    deleteStudent: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = Number(req.params.id);
             if (isNaN(id)) return httpResponse(req, res, 400, responseMessage.NOT_FOUND('id not found'));
@@ -83,7 +83,7 @@ export default {
             httpError(next, error, req, 500);
         }
     },
-    updateCourse: async (req: Request, res: Response, next: NextFunction) => {
+    updateStudent: async (req: Request, res: Response, next: NextFunction) => {
         try {
             const id = Number(req.params);
             if (isNaN(id)) return httpResponse(req, res, 400, responseMessage.NOT_FOUND('id not found'));

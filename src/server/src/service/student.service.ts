@@ -59,7 +59,7 @@ export class StudentService {
             const deleted = await repo.save(student);
             return deleted;
         }
-        throw new Error(responseMessage.UNABLE_TO_PROCESS)
+        throw new Error(responseMessage.NOT_FOUND('student'))
     }
 
 }

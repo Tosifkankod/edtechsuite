@@ -6,8 +6,8 @@ import { indexSchema } from '../schema/commonSchema';
 
 const router = Router();
 
-router.route('/').post(validateResource(studentSchema), studentController.createCourse)
+router.route('/').post(validateResource(studentSchema), studentController.createStudent)
 router.route('/').get(validateResource(indexSchema), studentController.index)
-router.route('/:id').get(studentController.singleCourse).delete(studentController.deleteCourse)
+router.route('/:id').get(studentController.singleStudent).delete(studentController.deleteStudent)
 
 export default router;
