@@ -26,6 +26,16 @@ export const useSaveStudent = () => {
     })
 }
 
+export const useGetSingleStudent = (id: string) => {
+    return useQuery({
+        queryKey: [QUERY_KEY],
+        queryFn: async () => {
+            const res = await api.get(`/student/${id}`);
+            return res.data.data
+        }
+    })
+}
+
 export const useStudents = (params: queryParams) => {
     return useQuery({
         queryKey: [QUERY_KEY, params],

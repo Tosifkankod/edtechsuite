@@ -1,7 +1,6 @@
 import { useEffect, useState, type ChangeEvent, type FormEvent } from "react"
 import Input from "../../../components/ui/Input"
 import { Save } from "lucide-react";
-import { createSlug } from "../../../utils/generateSlug";
 import { useSaveCourse, useSingleCourse, useUpdateCourse } from "../hooks/queryHook";
 import { useToast } from "../../../components/ui/Alert";
 import { AxiosError } from "axios";
@@ -13,7 +12,6 @@ const CourseEdit = () => {
     const isEdit = Boolean(courseId);
     const [courseData, setCourseData] = useState({
         courseName: "",
-        slug: "",
         courseDuration: "",
         courseFee: '',
         courseDescription: "",
@@ -27,10 +25,8 @@ const CourseEdit = () => {
 
     useEffect(() => {
         if (data && isEdit) {
-            console.log(data)
             const formattedData = {
                 courseName: data.courseName ?? '',
-                slug: data.slug ?? '',
                 courseDuration: data.courseDuration ?? '',
                 courseFee: data.courseFee ?? '',
                 courseDescription: data.courseDescription ?? ''
@@ -58,7 +54,6 @@ const CourseEdit = () => {
                 return {
                     ...prev,
                     courseName: e.target.value,
-                    slug: createSlug(e.target.value)
                 }
             }
             return { ...prev, [e.target.name]: e.target.value }
@@ -141,28 +136,6 @@ const CourseEdit = () => {
                             formErors.courseName &&
                             <span className="text-xs font-normal text-red-600">{formErors.courseName}</span>
                         }
-
-                        <div className="py-2 w-full"></div>
-
-                        <div className="flex w-full gap-1">
-                            <div className="w-full">
-                                <Input
-                                    className="w-full border-gray-300 mb-0"
-                                    value={courseData.slug}
-                                    name="courseSlug"
-                                    label="Slug"
-                                    type="text"
-                                    onChange={handleOnChange}
-                                    placeholder='Full Stack'
-                                    required={true}
-                                />
-                                {
-                                    formErors.courseSlug &&
-                                    <span className="text-xs font-normal text-red-600">{formErors.courseSlug}</span>
-                                }
-                            </div>
-
-                        </div>
 
                         <div className="py-2 w-full"></div>
 

@@ -1,12 +1,16 @@
 import { Save } from 'lucide-react'
 import Input from '../../../components/ui/Input'
 import SelectInput from '../../../components/ui/SelectInput'
-import { useState, type ChangeEvent, type FormEvent } from 'react';
-import { useSaveStudent } from '../hooks/queryHooks';
+import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
+import { useGetSingleStudent, useSaveStudent } from '../hooks/queryHooks';
 import { AxiosError } from 'axios';
 import { useToast } from '../../../components/ui/Alert';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSingleCourse } from '../../course/hooks/queryHook';
 
 const StudentEdit = () => {
+    const navigate = useNavigate();
+    const { studentId } = useParams();
     const [studentData, setStudentData] = useState({
         studentName: "",
         email: "",
@@ -15,10 +19,25 @@ const StudentEdit = () => {
         gender: "",
         employmentStatus: ""
     })
+    const isEdit = Boolean(studentId);
+    const { data, isLoading } = useGetSingleStudent(String(studentId));
     const [formErors, setFormErrors] = useState<Record<string, string>>({});
-
     const saveMutation = useSaveStudent();
     const { toast } = useToast();
+
+    useEffect(() => {
+        if (isEdit && data) {
+            const formattedData = {
+                studentName: data.studentName ?? '',
+                email: data.email ?? '',
+                phone: data.phone ?? '',
+                address: data.address ?? '',
+                gender: data.gender ?? '',
+                employmentStatus: data.employmentStatus ?? ''
+            }
+            setStudentData(formattedData)
+        }
+    }, [isEdit, data])
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
         setStudentData((prev) => {
