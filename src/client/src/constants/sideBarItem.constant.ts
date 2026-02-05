@@ -30,11 +30,7 @@ export const sidebarItems: SidebarItem[] = [
     {
         title: "Trainers",
         icon: UserIcon,
-        dropdown: [
-            { title: "All Trainers", link: "/trainers/all" },
-            { title: "Add Trainer", link: "/trainers/add" },
-            { title: "Assign Courses", link: "/trainers/assign-courses" },
-        ],
+        link: '/trainer'
     },
     {
         title: "Reports",
