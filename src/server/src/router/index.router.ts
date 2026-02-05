@@ -2,6 +2,7 @@ import { Router } from "express";
 import apiController from "../controller/apiController";
 import courseRouter from './course.router';
 import studentRouter from './student.router';
+import trainerRouter from './trainer.router';
 
 const router = Router();
 
@@ -11,5 +12,6 @@ router.route('/health').get(apiController.health)
 // course
 router.use('/course', courseRouter)
 router.use('/student', studentRouter)
+router.use('/trainer', trainerRouter)
 
 export default router;
