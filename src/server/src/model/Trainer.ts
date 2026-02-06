@@ -10,7 +10,7 @@ import { GenderEnum } from "../types/enums";
 
 @Entity("trainer", { schema: "public" })
 @Index("trainer_id_unique", ["id"], { unique: true })
-export class Course {
+export class Trainer {
 
     @PrimaryGeneratedColumn({ type: "integer", name: "id" })
     id: number;

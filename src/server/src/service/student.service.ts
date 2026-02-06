@@ -57,7 +57,6 @@ export class StudentService {
                 isDeleted: 0
             }
         })
-        console.log(student)
         if (student) {
             student.isDeleted = 1;
             const deleted = await repo.save(student);

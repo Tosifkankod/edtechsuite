@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 export default {
-    index: async (req: Request, res: Response, next: NextFunction) => {
+    index: async (_: Request, __: Response, ___: NextFunction) => {
         try {
 
         } catch (error) {
