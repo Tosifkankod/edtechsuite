@@ -13,15 +13,19 @@ export class TrainerService {
 
         // global Search
         if (search) {
-
         }
 
         qb.where('trainer.isDeleted = 0');
         qb.orderBy(`trainer.${sortBy}`, order);
-        qb.skip((page - 1) * limit).take(limit)
+        qb.skip((page - 1) * limit).take(limit);
         const [data, total] = await qb.getManyAndCount();
+
+        const formattedData = data.map(trainer => ({
+            ...trainer, joiningDate: trainer.joiningDate ? trainer.joiningDate.toISOString().slice(0, 10) : null
+        }));
+
         return {
-            courses: data,
+            trainer: formattedData,
             meta: {
                 page,
                 limit,

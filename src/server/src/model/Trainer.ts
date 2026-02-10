@@ -36,7 +36,7 @@ export class Trainer {
     gender: GenderEnum;
 
     @Column("timestamp without time zone", { name: "joining_date" })
-    joiningDate: string;
+    joiningDate: Date;
 
     @Column("smallint", { name: "is_deleted", default: () => "0" })
     isDeleted: number;
