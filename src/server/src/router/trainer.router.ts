@@ -8,6 +8,6 @@ const router = express.Router();
 
 router.route('/').get(validateResource(indexSchema), trainerController.index)
 router.route('/').post(validateResource(trainerSchema), trainerController.createTrainer)
-router.route('/:id').delete(trainerController.deleteTrainer).patch(trainerController.updateTrainer)
+router.route('/:id').delete(trainerController.deleteTrainer).patch(trainerController.updateTrainer).get(trainerController.singleTrainer)
 
 export default router;
