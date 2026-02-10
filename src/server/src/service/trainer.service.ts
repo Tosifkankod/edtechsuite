@@ -1,11 +1,34 @@
 import { AppDataSource } from "../config/data-source";
 import responseMessage from "../constant/responseMessage";
 import { Trainer } from "../model/Trainer";
+import { commonQueryParams } from "../types/types";
 
 const repo = AppDataSource.getRepository(Trainer);
 export class TrainerService {
-    async findAll() {
+    async findAll(params: commonQueryParams) {
+        const { limit, page, search, sortBy, order } = params;
 
+
+        const qb = repo.createQueryBuilder('trainer');
+
+        // global Search
+        if (search) {
+
+        }
+
+        qb.where('trainer.isDeleted = 0');
+        qb.orderBy(`trainer.${sortBy}`, order);
+        qb.skip((page - 1) * limit).take(limit)
+        const [data, total] = await qb.getManyAndCount();
+        return {
+            courses: data,
+            meta: {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
+            },
+        };
     }
     create(data: Trainer) {
         const model = new Trainer();

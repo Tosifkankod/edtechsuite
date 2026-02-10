@@ -3,14 +3,18 @@ import httpResponse from "../utils/httpResponse";
 import responseMessage from "../constant/responseMessage";
 import { TrainerService } from "../service/trainer.service";
 import httpError from "../utils/httpError";
+import { indexSchema } from "../schema/commonSchema";
 
 const service = new TrainerService();
 export default {
-    index: async (_: Request, __: Response, ___: NextFunction) => {
+    index: async (req: Request, res: Response, next: NextFunction) => {
         try {
-
+            const query = indexSchema.parse(req.query);
+            const result = await service.findAll(query);
+            console.log(result)
+            httpResponse(req, res, 200, responseMessage.SUCCESS, result)
         } catch (error) {
-
+            httpError(next, error, req, 500);
         }
     },
     singleTrainer: async (req: Request, res: Response, next: NextFunction) => {
