@@ -51,15 +51,15 @@ export const useTrainer = (params: queryParams) => {
 
 }
 
-export const useDeleteStudent = () => {
+export const useDeleteTrainer = () => {
     const queryClient = useQueryClient();
     const { toast } = useToast();
 
     return useMutation({
-        mutationFn: (studentId: number) => api.delete(`${url}/${studentId}`),
+        mutationFn: (trainerId: number) => api.delete(`${url}/${trainerId}`),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY] })
-            toast('student deleted successfully', 'success')
+            toast('trainer deleted successfully', 'success')
         },
         onError: (error) => {
             console.log(error)

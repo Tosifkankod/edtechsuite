@@ -3,6 +3,7 @@ import { useDeleteCourse } from "../../modules/course/hooks/queryHook";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDeleteStudent } from "../../modules/student/hooks/queryHooks";
+import { useDeleteTrainer } from "../../modules/trainers/hooks/queryHooks";
 
 interface ActionDropdownProps<TData extends { id: number }> {
     data: TData;
@@ -20,6 +21,7 @@ export default function ActionDropdown<TData extends { id: number; },>({ data, i
     const deleteHandlers: Record<string, DeleteHandler> = {
         '/course': useDeleteCourse().mutate,
         '/student': useDeleteStudent().mutate,
+        '/trainer': useDeleteTrainer().mutate
     }
 
     const handleOnEdit = (id: number) => {
