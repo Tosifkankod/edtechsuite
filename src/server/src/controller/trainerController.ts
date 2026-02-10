@@ -64,4 +64,20 @@ export default {
             httpError(next, error, req, 500);
         }
     },
+    deleteTrainer: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id = Number(req.params.id);
+            if (isNaN(id)) return httpResponse(req, res, 400, responseMessage.NOT_FOUND('id not found'));
+
+            const isDeleted = await service.delete(id);
+
+            if (!isDeleted) {
+                throw new Error(responseMessage.UNABLE_TO_PROCESS)
+            }
+
+            return httpResponse(req, res, 200, responseMessage.SUCCESS, isDeleted);
+        } catch (error) {
+            httpError(next, error, req, 500);
+        }
+    },
 }
