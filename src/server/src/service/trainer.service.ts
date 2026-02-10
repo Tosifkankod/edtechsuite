@@ -7,7 +7,7 @@ export class TrainerService {
     async findAll() {
 
     }
-    async create(data: Trainer) {
+    create(data: Trainer) {
         const model = new Trainer();
         model.address = data.address;
         model.email = data.email;
@@ -24,7 +24,7 @@ export class TrainerService {
     }
 
     async save(model: Trainer): Promise<Trainer> {
-        return await repo.save(model);
+        return repo.save(model);
     }
 
     async delete(id: number) {
@@ -52,5 +52,4 @@ export class TrainerService {
         if (bodyParams.joiningDate !== undefined) model.joiningDate = bodyParams.joiningDate;
         return model;
     }
-
 }
