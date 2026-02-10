@@ -1,10 +1,11 @@
 import { Save } from 'lucide-react'
 import Input from '../../../components/ui/Input'
 import SelectInput from '../../../components/ui/SelectInput'
-import { useState, type ChangeEvent, type FormEvent } from 'react';
-import { useSaveTrainer } from '../hooks/queryHooks';
+import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
+import { useGetSingleTrainer, useSaveTrainer } from '../hooks/queryHooks';
 import { AxiosError } from 'axios';
 import { useToast } from '../../../components/ui/Alert';
+import { useParams } from 'react-router-dom';
 
 const TrainerEdit = () => {
   const [trainerData, setTrainerData] = useState({
@@ -15,9 +16,28 @@ const TrainerEdit = () => {
     gender: "",
     joiningDate: ""
   })
+  const [originalData, setOriginalData] = useState<typeof trainerData | null>(null);
+  const { trainerId } = useParams();
+  const { data, isLoading } = useGetSingleTrainer(String(trainerId));
+  const isEdit = Boolean(trainerId);
   const [formErors, setFormErrors] = useState<Record<string, string>>({});
   const saveMutation = useSaveTrainer();
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (isEdit && data) {
+      const formattedData = {
+        trainerName: data.trainerName ?? '',
+        email: data.email ?? '',
+        phone: data.phone ?? '',
+        address: data.address ?? '',
+        gender: data.gender ?? '',
+        joiningDate: data.joiningDate ?? ''
+      }
+      setOriginalData(formattedData);
+      setTrainerData(formattedData)
+    }
+  }, [isEdit, data])
 
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

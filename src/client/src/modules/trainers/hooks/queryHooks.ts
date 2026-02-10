@@ -27,7 +27,7 @@ export const useSaveTrainer = () => {
     })
 }
 
-export const useGetSingleStudent = (id: string) => {
+export const useGetSingleTrainer = (id: string) => {
     return useQuery({
         queryKey: [QUERY_KEY],
         queryFn: async () => {
