@@ -1,7 +1,10 @@
 import { Save } from 'lucide-react'
 import Input from '../../../components/ui/Input'
 import SelectInput from '../../../components/ui/SelectInput'
-import { useState, type ChangeEvent } from 'react';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
+import { useSaveTrainer } from '../hooks/queryHooks';
+import { AxiosError } from 'axios';
+import { useToast } from '../../../components/ui/Alert';
 
 const TrainerEdit = () => {
   const [trainerData, setTrainerData] = useState({
@@ -13,8 +16,26 @@ const TrainerEdit = () => {
     joiningDate: ""
   })
   const [formErors, setFormErrors] = useState<Record<string, string>>({});
+  const saveMutation = useSaveTrainer();
+  const { toast } = useToast();
 
-  const handleOnSubmit = () => {
+  const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setFormErrors({});
+
+    try {
+      await saveMutation.mutateAsync(trainerData)
+    } catch (error) {
+      console.log("error")
+      if (error instanceof AxiosError) {
+        toast(error.response?.data.message, 'error');
+        const errors = error.response?.data.error;
+        console.log(errors)
+        if (errors) {
+          setFormErrors(errors);
+        }
+      }
+    }
 
   }
 

@@ -4,14 +4,15 @@ import { api } from "../../../utils/api";
 import { AxiosError } from "axios";
 import type { queryParams } from "../../../types/commonTypes";
 
-const QUERY_KEY = "student";
+const QUERY_KEY = "trainer";
+const url = '/trainer';
 
-export const useSaveStudent = () => {
+export const useSaveTrainer = () => {
     const queryClient = useQueryClient();
     const { toast } = useToast();
 
     return useMutation({
-        mutationFn: (studentData: any) => api.post('/student', studentData),
+        mutationFn: (trainerData: any) => api.post(url, trainerData),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY] })
             toast('student saved', 'success');
@@ -30,7 +31,7 @@ export const useGetSingleStudent = (id: string) => {
     return useQuery({
         queryKey: [QUERY_KEY],
         queryFn: async () => {
-            const res = await api.get(`/student/${id}`);
+            const res = await api.get(`${url}/${id}`);
             return res.data.data
         }
     })
@@ -40,7 +41,7 @@ export const useStudents = (params: queryParams) => {
     return useQuery({
         queryKey: [QUERY_KEY, params],
         queryFn: async () => {
-            const res = await api.get('/student', {
+            const res = await api.get(url, {
                 params
             });
             return res.data.data
@@ -55,7 +56,7 @@ export const useDeleteStudent = () => {
     const { toast } = useToast();
 
     return useMutation({
-        mutationFn: (studentId: number) => api.delete(`/student/${studentId}`),
+        mutationFn: (studentId: number) => api.delete(`${url}/${studentId}`),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY] })
             toast('student deleted successfully', 'success')
@@ -74,7 +75,7 @@ export const useUpdateStudent = (id: String) => {
 
     return useMutation({
         mutationFn: (studentData: any) =>
-            api.patch(`/student/${id}`, studentData),
+            api.patch(`${url}/${id}`, studentData),
 
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY] })
