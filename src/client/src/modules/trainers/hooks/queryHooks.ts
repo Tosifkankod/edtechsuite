@@ -37,7 +37,7 @@ export const useGetSingleStudent = (id: string) => {
     })
 }
 
-export const useStudents = (params: queryParams) => {
+export const useTrainer = (params: queryParams) => {
     return useQuery({
         queryKey: [QUERY_KEY, params],
         queryFn: async () => {
