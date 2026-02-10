@@ -45,8 +45,8 @@ export class TrainerService {
         return model;
     }
 
-    async findOne(model: { where: any }) {
-        return await repo.findOne(model);
+    findOne(model: { where: any }) {
+        return repo.findOne(model);
     }
 
     async save(model: Trainer): Promise<Trainer> {

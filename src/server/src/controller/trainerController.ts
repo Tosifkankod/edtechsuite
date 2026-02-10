@@ -4,6 +4,7 @@ import responseMessage from "../constant/responseMessage";
 import { TrainerService } from "../service/trainer.service";
 import httpError from "../utils/httpError";
 import { indexSchema } from "../schema/commonSchema";
+import { Trainer } from "../model/Trainer";
 
 const service = new TrainerService();
 export default {
@@ -80,4 +81,34 @@ export default {
             httpError(next, error, req, 500);
         }
     },
+    updateTrainer: async (req: Request, res: Response, next: NextFunction) => {
+        try {
+            const id = Number(req.params.id);
+            if (isNaN(id)) return httpResponse(req, res, 400, responseMessage.NOT_FOUND('id not found'));
+
+            const trainer = await service.findOne({
+                where: {
+                    id: id,
+                    isDeleted: 0
+                }
+            });
+
+            if (!trainer) {
+                return httpResponse(req, res, 404, responseMessage.NOT_FOUND('student not found'));
+            }
+
+            const body = req.body as Partial<Trainer>
+            const newModel = service.update(trainer, body);
+            const savedModel = await service.save(newModel);
+
+
+            if (!savedModel) {
+                return httpResponse(req, res, 404, responseMessage.UNABLE_TO_PROCESS);
+            }
+
+            return httpResponse(req, res, 200, responseMessage.SUCCESS, savedModel);
+        } catch (error) {
+            httpError(next, error, req, 500);
+        }
+    }
 }
