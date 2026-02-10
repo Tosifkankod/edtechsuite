@@ -12,7 +12,6 @@ export class TrainerService {
         model.address = data.address;
         model.email = data.email;
         model.gender = data.gender;
-        model.isActive = data.isActive;
         model.joiningDate = data.joiningDate;
         model.phone = data.phone;
         model.trainerName = data.trainerName;
@@ -47,7 +46,6 @@ export class TrainerService {
         if (bodyParams.trainerName !== undefined) model.trainerName = bodyParams.trainerName;
         if (bodyParams.address !== undefined) model.address = bodyParams.address;
         if (bodyParams.email !== undefined) model.email = bodyParams.email;
-        if (bodyParams.isActive !== undefined) model.isActive = bodyParams.isActive;
         if (bodyParams.phone !== undefined) model.phone = bodyParams.phone;
         if (bodyParams.joiningDate !== undefined) model.joiningDate = bodyParams.joiningDate;
         return model;

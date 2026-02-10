@@ -41,9 +41,6 @@ export class Trainer {
     @Column("smallint", { name: "is_deleted", default: () => "0" })
     isDeleted: number;
 
-    @Column("smallint", { name: "is_active", default: () => "1" })
-    isActive: number;
-
     @CreateDateColumn({ name: "created_at" })
     createdAt: Date;
 
