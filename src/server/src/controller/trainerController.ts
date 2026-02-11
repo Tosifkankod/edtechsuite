@@ -33,7 +33,14 @@ export default {
             if (!trainer) {
                 return httpResponse(req, res, 404, responseMessage.NOT_FOUND('trainer'));
             }
-            return httpResponse(req, res, 200, responseMessage.SUCCESS, trainer);
+
+            const formattedData = {
+                ...trainer,
+                joiningDate: trainer.joiningDate.toISOString().slice(0, 10)
+            }
+
+
+            return httpResponse(req, res, 200, responseMessage.SUCCESS, formattedData);
         } catch (error) {
             httpError(next, error, req, 500);
         }
