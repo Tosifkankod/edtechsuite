@@ -2,10 +2,11 @@ import { Save } from 'lucide-react'
 import Input from '../../../components/ui/Input'
 import SelectInput from '../../../components/ui/SelectInput'
 import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
-import { useGetSingleTrainer, useSaveTrainer } from '../hooks/queryHooks';
+import { useGetSingleTrainer, useSaveTrainer, useUpdateTrainer } from '../hooks/queryHooks';
 import { AxiosError } from 'axios';
 import { useToast } from '../../../components/ui/Alert';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const TrainerEdit = () => {
   const [trainerData, setTrainerData] = useState({
@@ -16,12 +17,14 @@ const TrainerEdit = () => {
     gender: "",
     joiningDate: ""
   })
+  const navigate = useNavigate();
   const [originalData, setOriginalData] = useState<typeof trainerData | null>(null);
   const { trainerId } = useParams();
   const { data, isLoading } = useGetSingleTrainer(String(trainerId));
   const isEdit = Boolean(trainerId);
   const [formErors, setFormErrors] = useState<Record<string, string>>({});
   const saveMutation = useSaveTrainer();
+  const updateMutation = useUpdateTrainer(String(trainerId));
   const { toast } = useToast();
 
   useEffect(() => {
@@ -32,31 +35,67 @@ const TrainerEdit = () => {
         phone: data.phone ?? '',
         address: data.address ?? '',
         gender: data.gender ?? '',
-        joiningDate: data.joiningDate ?? ''
+        joiningDate: data.joiningDate ?? new Date(data.joiningDate)
       }
+      console.log(formattedData)
       setOriginalData(formattedData);
       setTrainerData(formattedData)
     }
   }, [isEdit, data])
 
+  const getUpdatedFields = () => {
+    if (!originalData) return trainerData;
+    const updated: Partial<typeof trainerData> = {};
+    Object.keys(trainerData).forEach((key) => {
+      const k = key as keyof typeof trainerData;
+      if (trainerData[k] !== originalData[k]) {
+        updated[k] = trainerData[k];
+      }
+    })
+    return updated;
+  }
+
   const handleOnSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormErrors({});
 
-    try {
-      await saveMutation.mutateAsync(trainerData)
-    } catch (error) {
-      console.log("error")
-      if (error instanceof AxiosError) {
-        toast(error.response?.data.message, 'error');
-        const errors = error.response?.data.error;
-        console.log(errors)
-        if (errors) {
-          setFormErrors(errors);
+    const updatedFields = isEdit ? getUpdatedFields() : {};
+    if (Object.keys(updatedFields).length == 0 && updatedFields.constructor === Object && isEdit) {
+      toast('Nothing Changed', 'info')
+      return;
+    }
+    setFormErrors({});
+
+    if (isEdit) {
+      try {
+        await updateMutation.mutateAsync(trainerData)
+        navigate('/trainer')
+      } catch (error) {
+        console.log("error")
+        if (error instanceof AxiosError) {
+          toast(error.response?.data.message, 'error');
+          const errors = error.response?.data.error;
+          console.log(errors)
+          if (errors) {
+            setFormErrors(errors);
+          }
+        }
+      }
+    } else {
+      try {
+        await saveMutation.mutateAsync(trainerData)
+      } catch (error) {
+        console.log("error")
+        if (error instanceof AxiosError) {
+          toast(error.response?.data.message, 'error');
+          const errors = error.response?.data.error;
+          console.log(errors)
+          if (errors) {
+            setFormErrors(errors);
+          }
         }
       }
     }
-
   }
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -188,6 +227,7 @@ const TrainerEdit = () => {
               <input
                 type="date"
                 name='joiningDate'
+                value={trainerData.joiningDate}
                 onChange={(e) => {
                   setTrainerData((prev) => {
                     return { ...prev, joiningDate: e.target.value }

@@ -69,17 +69,17 @@ export const useDeleteTrainer = () => {
 }
 
 
-export const useUpdateStudent = (id: String) => {
+export const useUpdateTrainer = (id: String) => {
     const queryClient = useQueryClient();
     const { toast } = useToast();
 
     return useMutation({
-        mutationFn: (studentData: any) =>
-            api.patch(`${url}/${id}`, studentData),
+        mutationFn: (trainerData: any) =>
+            api.patch(`${url}/${id}`, trainerData),
 
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: [QUERY_KEY] })
-            toast("course saved", 'success');
+            toast("trainer saved", 'success');
         }
     })
 }
