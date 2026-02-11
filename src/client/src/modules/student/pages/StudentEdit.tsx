@@ -6,7 +6,6 @@ import { useGetSingleStudent, useSaveStudent, useUpdateStudent } from '../hooks/
 import { AxiosError } from 'axios';
 import { useToast } from '../../../components/ui/Alert';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSingleCourse } from '../../course/hooks/queryHook';
 
 const StudentEdit = () => {
     const navigate = useNavigate();
