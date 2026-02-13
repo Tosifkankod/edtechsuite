@@ -3,6 +3,7 @@ import RootLayout from './layout/RootLayout';
 import { courseRoutes } from "./modules/course/course.route";
 import { studentRoutes } from "./modules/student/student.route";
 import { trainerRoutes } from "./modules/trainers/trainer.route";
+import { loginRoutes } from "./modules/login/login.route";
 
 export const router = createBrowserRouter([
     {
@@ -24,6 +25,12 @@ export const router = createBrowserRouter([
         element: <RootLayout />,
         children: [
             ...trainerRoutes
+        ]
+    },
+    {
+        path: '/login',
+        children: [
+            ...loginRoutes
         ]
     }
 ])
