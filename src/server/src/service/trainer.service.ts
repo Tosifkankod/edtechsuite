@@ -21,7 +21,7 @@ export class TrainerService {
         const [data, total] = await qb.getManyAndCount();
 
         const formattedData = data.map(trainer => ({
-            ...trainer, joiningDate: trainer.joiningDate ? trainer.joiningDate.toISOString().slice(0, 10) : null
+            ...trainer, joiningDate: trainer.joiningDate ? trainer.joiningDate.toLocaleDateString('en-CA').split('T')[0] : null
         }));
 
         return {
@@ -39,7 +39,7 @@ export class TrainerService {
         model.address = data.address;
         model.email = data.email;
         model.gender = data.gender;
-        model.joiningDate = data.joiningDate;
+        model.joiningDate = new Date(data.joiningDate);
         model.phone = data.phone;
         model.trainerName = data.trainerName;
         return model;

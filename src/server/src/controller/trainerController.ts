@@ -36,9 +36,8 @@ export default {
 
             const formattedData = {
                 ...trainer,
-                joiningDate: trainer.joiningDate.toISOString().slice(0, 10)
+                joiningDate: trainer.joiningDate.toLocaleDateString('en-CA').split('T')[0]
             }
-
 
             return httpResponse(req, res, 200, responseMessage.SUCCESS, formattedData);
         } catch (error) {
